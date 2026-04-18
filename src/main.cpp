@@ -6,7 +6,6 @@
 #include <string>
 #include <GravityEngine.hpp>
 #include <Class.hpp>
-#include <iostream>
 
 // ─────────────────────────────────────────────
 //  Constantes
