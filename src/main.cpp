@@ -176,7 +176,7 @@ int main()
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER,
-                 6 * sizeof(float),
+                 9 * sizeof(float),
                  nullptr,
                  GL_DYNAMIC_DRAW);
 
@@ -195,11 +195,16 @@ int main()
 
     Sun sun;
     Earth earth;
+    Mars mars;
+    double deltatT = 3600.0*2;
+    // const int stepsPerFrame = 24;
+    const double openGlEarthScale = 1.496e12;
+    const double openGlMarsScale = 2.27944e12;
 
     while (!glfwWindowShouldClose(window))
     {
-        // std::cout << "Sun: " << sun.x << " " << sun.y << " " << sun.z << "\n";
-        // std::cout << "Earth: " << earth.x << " " << earth.y << " " << earth.z << "\n";
+        std::cout << "Sun: " << sun.x << " " << sun.y << " " << sun.z << "\n";
+        std::cout << "Earth: " << earth.x / openGlEarthScale << " " << earth.y / openGlEarthScale << " " << earth.z << "\n";
         // Calcul du FPS dans le titre
         double now = glfwGetTime();
         double diff = now - lastTime;
@@ -222,15 +227,18 @@ int main()
             sun.x,
             sun.y,
             sun.z, // Soleil (centre)
-            earth.x,
-            earth.y,
-            earth.z, // Terre  (à droite)
+            earth.x / openGlEarthScale,
+            earth.y / openGlEarthScale,
+            earth.z / openGlEarthScale, // Terre  (à droite)
+            mars.x / openGlEarthScale,
+            mars.y / openGlEarthScale,
+            mars.z / openGlEarthScale,
         };
 
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
-        calculePosition(sun, earth);
+        calculePosition(sun, earth, mars, deltatT);
         //
 
         // Dessin des corps
@@ -246,6 +254,9 @@ int main()
         // Terre (bleu)
         glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.2f, 0.5f, 1.0f);
         glDrawArrays(GL_POINTS, 1, 1);
+
+        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.8f, 0.5f, 1.0f);
+        glDrawArrays(GL_POINTS, 2, 1);
 
         glBindVertexArray(0);
 
