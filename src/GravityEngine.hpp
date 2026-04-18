@@ -6,6 +6,8 @@ void calculePosition(Sun& sun, Earth& earth, Mars& mars, double deltaT);
 
 void calculePositionEarth(Sun &sun, Earth &earth, double deltaT);
 
+void calculePositionMars(Sun &sun, Mars &mars, double deltaT);
+
 double getAcceleration(double forceVec, double planetM);
 
 double getPlanetSunDistance(double vecX, double vecY, double vecZ);

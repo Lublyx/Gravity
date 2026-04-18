@@ -26,7 +26,7 @@ static const char *VERTEX_SHADER_SRC = R"glsl(
     void main()
     {
         gl_Position = uMVP * vec4(aPos, 1.0);
-        gl_PointSize = 8.0;
+        gl_PointSize = 12.0;
     }
 )glsl";
 
@@ -196,9 +196,9 @@ int main()
     Sun sun;
     Earth earth;
     Mars mars;
-    double deltatT = 3600.0*2;
+    double deltatT = 3600.0*4;
     // const int stepsPerFrame = 24;
-    const double openGlEarthScale = 1.496e12;
+    const double openGlEarthScale = 0.8e12;
     const double openGlMarsScale = 2.27944e12;
 
     while (!glfwWindowShouldClose(window))

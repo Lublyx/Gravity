@@ -26,6 +26,8 @@ void calculePosition(Sun &sun, Earth &earth, Mars &mars, double deltaT)
     // std::cout << E << std::endl;
 
     calculePositionEarth(sun, earth, deltaT);
+
+    calculePositionMars(sun, mars, deltaT);
 }
 
 void calculePositionEarth(Sun &sun, Earth &earth, double deltaT)
@@ -51,6 +53,31 @@ void calculePositionEarth(Sun &sun, Earth &earth, double deltaT)
     earth.x += earth.vx * deltaT;
     earth.y += earth.vy * deltaT;
     earth.z += earth.vz * deltaT;
+}
+
+void calculePositionMars(Sun &sun, Mars &mars, double deltaT)
+{
+    double vecXMarsSun = getPlanetVectorX(sun, mars.x);
+    double vecYMarsSun = getPlanetVectorY(sun, mars.y);
+    double vecZMarsSun = getPlanetVectorZ(sun, mars.z);
+
+    double r = getPlanetSunDistance(vecXMarsSun, vecYMarsSun, vecZMarsSun);
+
+    double forceVecX = getVectorForce(vecXMarsSun, r, marsM);
+    double forceVecY = getVectorForce(vecYMarsSun, r, marsM);
+    double forceVecZ = getVectorForce(vecZMarsSun, r, marsM);
+
+    double accelerationMarsX = getAcceleration(forceVecX, marsM);
+    double accelerationMarsY = getAcceleration(forceVecY, marsM);
+    double accelerationMarsZ = getAcceleration(forceVecZ, marsM);
+
+    mars.vx += accelerationMarsX * deltaT;
+    mars.vy += accelerationMarsY * deltaT;
+    mars.vz += accelerationMarsZ * deltaT;
+
+    mars.x += mars.vx * deltaT;
+    mars.y += mars.vy * deltaT;
+    mars.z += mars.vz * deltaT;
 }
 
 double getAcceleration(double forceVec, double planetM)
