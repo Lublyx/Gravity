@@ -255,6 +255,9 @@ int main()
     RenderSphere earthSphere;
     earthSphere.init(1);
 
+    RenderSphere marsSphere;
+    marsSphere.init(0.8);
+
     while (!glfwWindowShouldClose(window))
     {
         // std::cout << "Sun: " << sun.x << " " << sun.y << " " << sun.z << "\n";
@@ -311,6 +314,13 @@ int main()
         glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.2f, 0.5f, 1.0f);
         earthSphere.draw();
 
+        glm::mat4 modelMars = glm::translate(glm::mat4(1.0f),
+                                              glm::vec3(mars.x / openGlEarthScale, mars.y / openGlEarthScale, mars.z / openGlEarthScale));
+        MVP = projection * view * modelMars;
+
+        glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.8f, 0.2f, 1.0f);
+        marsSphere.draw();
     
         calculePosition(sun, earth, mars, deltatT);
         
