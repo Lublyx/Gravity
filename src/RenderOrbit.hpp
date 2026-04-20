@@ -21,8 +21,8 @@ struct RenderOrbit
             float theta = 2.0f * M_PI * i/segment;
 
             vertices.push_back(cos(theta));
-            vertices.push_back(0.0f);
             vertices.push_back(sin(theta));
+            vertices.push_back(0.0f);
         }        
 
 

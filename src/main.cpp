@@ -247,14 +247,16 @@ int main()
     double lastTime = glfwGetTime();
     int frames = 0;
 
-    Sun sun;
-    Earth earth;
-    Mars mars;
     int days = 4;
     double deltatT = 3600.0 * days;
-    // const int stepsPerFrame = 24;
+    Sun sun;
+    Earth earth;
+    double maxEarthX, maxEarthY, maxEarthZ = 0.0f;
+    getEarthOrbit(sun ,earth, deltatT, maxEarthX, maxEarthY, maxEarthZ);
+    std::cout << maxEarthX << " / " << maxEarthY << " / " << maxEarthZ;
+
+    Mars mars;
     const double openGlEarthScale = 0.8e10;
-    const double openGlMarsScale = 2.27944e12;
 
     RenderSphere sunSphere;
     sunSphere.init(3);
@@ -330,13 +332,12 @@ int main()
         marsSphere.draw();
 
         glm::mat4 modelOrbit = glm::scale(glm::mat4(1.0f),
-                                             glm::vec3(earth.y / openGlEarthScale, earth.y / openGlEarthScale, earth.y / openGlEarthScale));
+                                             glm::vec3(maxEarthY, maxEarthY, maxEarthY));
         MVP = projection * view * modelOrbit;
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
         glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.0f, 0.5f, 0.0f);
         orbit.draw();
-
         
 
         calculePosition(sun, earth, mars, deltatT);

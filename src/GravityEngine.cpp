@@ -55,6 +55,24 @@ void calculePositionEarth(Sun &sun, Earth &earth, double deltaT)
     earth.z += earth.vz * deltaT;
 }
 
+void getEarthOrbit(Sun &sun, Earth &earth, double deltaT, double &maxEarthX, double &maxEarthY, double &maxEarthZ)
+{
+    const double openGlEarthScale = 0.8e10;
+
+    double earthBaseX = earth.x;
+    double earthBaseY = earth.y;
+    double earthBaseZ = earth.z;
+
+    do
+    {
+        calculePositionEarth(sun, earth, deltaT);
+        if (earth.x / openGlEarthScale > maxEarthX) maxEarthX = earth.x / openGlEarthScale;
+        if (earth.y / openGlEarthScale > maxEarthY) maxEarthY = earth.y / openGlEarthScale; 
+        if (earth.z / openGlEarthScale > maxEarthZ) maxEarthZ = earth.z / openGlEarthScale;
+
+    } while (earthBaseX != earth.x && earthBaseY != earth.y && earthBaseZ != earth.z);
+}
+
 void calculePositionMars(Sun &sun, Mars &mars, double deltaT)
 {
     double vecXMarsSun = getPlanetVectorX(sun, mars.x);
