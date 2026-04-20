@@ -6,9 +6,11 @@
 
 #include <iostream>
 #include <string>
+#include <cmath>
 #include <GravityEngine.hpp>
 #include <Class.hpp>
 #include <RenderSphere.hpp>
+#include <RenderOrbit.hpp>
 
 // ─────────────────────────────────────────────
 //  Constantes
@@ -17,14 +19,13 @@ static constexpr int WINDOW_WIDTH = 1280;
 static constexpr int WINDOW_HEIGHT = 720;
 static const std::string WINDOW_TITLE = "Gravity";
 struct Camera
-    {
-        float yaw = 0.0f;                // angle horizontal (gauche/droite)
-        float pitch = 20.0f;             // angle vertical   (haut/bas)
-        float distance = 70.0f;           // distance au centre
-        bool dragging = false;           // clic droit enfoncé ?
-        double lastX = 0.0, lastY = 0.0; // dernière position souris
-    } cam;
-
+{
+    float yaw = 0.0f;                // angle horizontal (gauche/droite)
+    float pitch = 20.0f;             // angle vertical   (haut/bas)
+    float distance = 70.0f;          // distance au centre
+    bool dragging = false;           // clic droit enfoncé ?
+    double lastX = 0.0, lastY = 0.0; // dernière position souris
+} cam;
 
 // ─────────────────────────────────────────────
 //  Shaders (inline pour la base)
@@ -73,22 +74,27 @@ static void onResize(GLFWwindow * /*window*/, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-static void onMouseButton(GLFWwindow* window, int button, int action, int /*mods*/){
-    Camera* cam = (Camera*)glfwGetWindowUserPointer(window);
-    if (button == GLFW_MOUSE_BUTTON_RIGHT){
+static void onMouseButton(GLFWwindow *window, int button, int action, int /*mods*/)
+{
+    Camera *cam = (Camera *)glfwGetWindowUserPointer(window);
+    if (button == GLFW_MOUSE_BUTTON_RIGHT)
+    {
         cam->dragging = (action == GLFW_PRESS);
-        if (cam->dragging){
+        if (cam->dragging)
+        {
             glfwGetCursorPos(window, &cam->lastX, &cam->lastY);
         }
     }
 }
 
-static void onMouseMove(GLFWwindow *window, double x, double y){
-    Camera* cam = (Camera*) glfwGetWindowUserPointer(window);
-    if (!cam->dragging) return;
+static void onMouseMove(GLFWwindow *window, double x, double y)
+{
+    Camera *cam = (Camera *)glfwGetWindowUserPointer(window);
+    if (!cam->dragging)
+        return;
 
-    float dx = (float)(x - cam->lastX) *0.3f;
-    float dy = (float)(y - cam->lastY) *0.3f;
+    float dx = (float)(x - cam->lastX) * 0.3f;
+    float dy = (float)(y - cam->lastY) * 0.3f;
     cam->lastX = x;
     cam->lastY = y;
 
@@ -96,8 +102,9 @@ static void onMouseMove(GLFWwindow *window, double x, double y){
     cam->pitch = glm::clamp(cam->pitch + dy, -89.0f, 89.0f);
 }
 
-static void onScroll(GLFWwindow *window, double /*dx*/, double dy){
-    Camera* cam = (Camera*) glfwGetWindowUserPointer(window);
+static void onScroll(GLFWwindow *window, double /*dx*/, double dy)
+{
+    Camera *cam = (Camera *)glfwGetWindowUserPointer(window);
     cam->distance = glm::clamp((float)(cam->distance - dy * 0.2f), 0.5f, 100.0f);
 }
 
@@ -258,6 +265,9 @@ int main()
     RenderSphere marsSphere;
     marsSphere.init(0.8);
 
+    RenderOrbit orbit;
+    orbit.init();
+
     while (!glfwWindowShouldClose(window))
     {
         // std::cout << "Sun: " << sun.x << " " << sun.y << " " << sun.z << "\n";
@@ -274,11 +284,11 @@ int main()
             lastTime = now;
         }
 
-            // Clear
+        // Clear
         glClearColor(0.05f, 0.05f, 0.12f, 1.0f); // fond bleu nuit
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-         // // Dessin des corps
+        // // Dessin des corps
         glUseProgram(shaderProg);
 
         // calcule cam position
@@ -289,14 +299,11 @@ int main()
         glm::vec3 camPos = glm::vec3(
             cam.distance * cos(pitchRad) * sin(yawRad),
             cam.distance * sin(pitchRad),
-            cam.distance * cos(pitchRad) * cos(yawRad)
-        );
+            cam.distance * cos(pitchRad) * cos(yawRad));
 
         glm::mat4 view = glm::lookAt(camPos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), float(WINDOW_WIDTH) / float(WINDOW_HEIGHT), 0.01f, 100.0f);
-
-
 
         glm::mat4 modelSun = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -315,15 +322,25 @@ int main()
         earthSphere.draw();
 
         glm::mat4 modelMars = glm::translate(glm::mat4(1.0f),
-                                              glm::vec3(mars.x / openGlEarthScale, mars.y / openGlEarthScale, mars.z / openGlEarthScale));
+                                             glm::vec3(mars.x / openGlEarthScale, mars.y / openGlEarthScale, mars.z / openGlEarthScale));
         MVP = projection * view * modelMars;
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
         glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.8f, 0.2f, 1.0f);
         marsSphere.draw();
-    
-        calculePosition(sun, earth, mars, deltatT);
+
+        glm::mat4 modelOrbit = glm::scale(glm::mat4(1.0f),
+                                             glm::vec3(earth.y / openGlEarthScale, earth.y / openGlEarthScale, earth.y / openGlEarthScale));
+        MVP = projection * view * modelOrbit;
+
+        glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.0f, 0.5f, 0.0f);
+        orbit.draw();
+
         
+
+        calculePosition(sun, earth, mars, deltatT);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
 
@@ -364,7 +381,6 @@ int main()
         // glDrawArrays(GL_POINTS, 2, 1);
 
         // glBindVertexArray(0);
-
     }
 
     // ── Nettoyage ────────────────────────────
