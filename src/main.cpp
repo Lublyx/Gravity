@@ -17,6 +17,7 @@
 // ─────────────────────────────────────────────
 static constexpr int WINDOW_WIDTH = 1280;
 static constexpr int WINDOW_HEIGHT = 720;
+static float renderDistance = 1000.0f;
 static const std::string WINDOW_TITLE = "Gravity";
 struct Camera
 {
@@ -105,7 +106,7 @@ static void onMouseMove(GLFWwindow *window, double x, double y)
 static void onScroll(GLFWwindow *window, double /*dx*/, double dy)
 {
     Camera *cam = (Camera *)glfwGetWindowUserPointer(window);
-    cam->distance = glm::clamp((float)(cam->distance - dy * 1.0f), 0.5f, 100.0f);
+    cam->distance = glm::clamp((float)(cam->distance - dy * 1.0f), 0.5f, 1000.0f);
 }
 
 // ─────────────────────────────────────────────
@@ -305,7 +306,7 @@ int main()
 
         glm::mat4 view = glm::lookAt(camPos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-        glm::mat4 projection = glm::perspective(glm::radians(45.0f), float(WINDOW_WIDTH) / float(WINDOW_HEIGHT), 0.01f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(45.0f), float(WINDOW_WIDTH) / float(WINDOW_HEIGHT), 0.01f, renderDistance);
 
         glm::mat4 modelSun = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
