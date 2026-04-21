@@ -249,10 +249,13 @@ int main()
     double deltatT = 3600.0 * days;
     Sun sun;
     Earth earth;
+    Mars mars;
     double earthOrbit = 0.0f;
     getEarthOrbit(sun ,earth, deltatT, earthOrbit);
+    double marsOrbit = 0.0f;
+    getMarsOrbit(sun ,mars, deltatT, marsOrbit);
 
-    Mars mars;
+
     const double openGlScale = 0.8e10;
 
     RenderSphere sunSphere;
@@ -328,9 +331,17 @@ int main()
         glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.8f, 0.2f, 1.0f);
         marsSphere.draw();
 
-        glm::mat4 modelOrbit = glm::scale(glm::mat4(1.0f),
+        glm::mat4 modelOrbitEarth = glm::scale(glm::mat4(1.0f),
                                              glm::vec3(earthOrbit, earthOrbit, earthOrbit));
-        MVP = projection * view * modelOrbit;
+        MVP = projection * view * modelOrbitEarth;
+
+        glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.0f, 0.5f, 0.0f);
+        orbit.draw();
+
+        glm::mat4 modelOrbitMars = glm::scale(glm::mat4(1.0f),
+                                             glm::vec3(marsOrbit, marsOrbit, marsOrbit));
+        MVP = projection * view * modelOrbitMars;
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
         glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.0f, 0.5f, 0.0f);

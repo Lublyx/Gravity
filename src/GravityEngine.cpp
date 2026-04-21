@@ -57,7 +57,7 @@ void calculePositionEarth(Sun &sun, Earth &earth, double deltaT)
 
 void getEarthOrbit(Sun &sun, Earth &earth, double deltaT, double &earthOrbit)
 {
-    const double openGlEarthScale = 0.8e10;
+    const double openGlScale = 0.8e10;
 
     double earthBaseX = earth.x;
     double earthBaseY = earth.y;
@@ -66,7 +66,7 @@ void getEarthOrbit(Sun &sun, Earth &earth, double deltaT, double &earthOrbit)
     do
     {
         calculePositionEarth(sun, earth, deltaT);
-        if (earth.y / openGlEarthScale > earthOrbit) earthOrbit = earth.y / openGlEarthScale;
+        if (earth.y / openGlScale > earthOrbit) earthOrbit = earth.y / openGlScale;
     } while (earthBaseX != earth.x && earthBaseY != earth.y && earthBaseZ != earth.z);
 }
 
@@ -95,19 +95,19 @@ void calculePositionMars(Sun &sun, Mars &mars, double deltaT)
     mars.z += mars.vz * deltaT;
 }
 
-void getEarthOrbit(Sun &sun, Mars &mars, double deltaT, double &earthOrbit)
+void getMarsOrbit(Sun &sun, Mars &mars, double deltaT, double &earthOrbit)
 {
-    const double openGlEarthScale = 0.8e10;
+    const double openGlScale = 0.8e10;
 
-    double earthBaseX = mars.x;
-    double earthBaseY = mars.y;
-    double earthBaseZ = mars.z;
+    double marsBaseX = mars.x;
+    double marsBaseY = mars.y;
+    double marsBaseZ = mars.z;
 
     do
     {
         calculePositionMars(sun, mars, deltaT);
-        if (mars.y / openGlEarthScale > earthOrbit) earthOrbit = mars.y / openGlEarthScale;
-    } while (earthBaseX != mars.x && earthBaseY != mars.y && earthBaseZ != mars.z);
+        if (mars.y / openGlScale > earthOrbit) earthOrbit = mars.y / openGlScale;
+    } while (marsBaseX != mars.x && marsBaseY != mars.y && marsBaseZ != mars.z);
 }
 
 double getAcceleration(double forceVec, double planetM)

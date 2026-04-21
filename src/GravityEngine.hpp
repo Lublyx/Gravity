@@ -10,6 +10,8 @@ void getEarthOrbit(Sun &sun, Earth &earth, double deltaT, double &earthOrbit);
 
 void calculePositionMars(Sun &sun, Mars &mars, double deltaT);
 
+void getMarsOrbit(Sun &sun, Mars &mars, double deltaT, double &earthOrbit);
+
 double getAcceleration(double forceVec, double planetM);
 
 double getPlanetSunDistance(double vecX, double vecY, double vecZ);
