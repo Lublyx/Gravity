@@ -105,7 +105,7 @@ static void onMouseMove(GLFWwindow *window, double x, double y)
 static void onScroll(GLFWwindow *window, double /*dx*/, double dy)
 {
     Camera *cam = (Camera *)glfwGetWindowUserPointer(window);
-    cam->distance = glm::clamp((float)(cam->distance - dy * 0.2f), 0.5f, 100.0f);
+    cam->distance = glm::clamp((float)(cam->distance - dy * 1.0f), 0.5f, 100.0f);
 }
 
 // ─────────────────────────────────────────────
