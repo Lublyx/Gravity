@@ -6,7 +6,7 @@ void calculePosition(Sun& sun, Earth& earth, Mars& mars, double deltaT);
 
 void calculePositionEarth(Sun &sun, Earth &earth, double deltaT);
 
-void getEarthOrbit(Sun &sun, Earth &earth, double deltaT, double &maxEarthX, double &maxEarthY, double &maxEarthZ);
+void getEarthOrbit(Sun &sun, Earth &earth, double deltaT, double &earthOrbit);
 
 void calculePositionMars(Sun &sun, Mars &mars, double deltaT);
 

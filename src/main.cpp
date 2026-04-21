@@ -240,8 +240,6 @@ int main()
 
     glBindVertexArray(0);
 
-    // ── Matrice MVP simple (caméra fixe pour l'instant) ──
-    glm::mat4 MVP = glm::mat4(1.0f); // identité — on voit la scène en 2D NDC
 
     // ── Boucle de rendu ───────────────────────
     double lastTime = glfwGetTime();
@@ -251,12 +249,11 @@ int main()
     double deltatT = 3600.0 * days;
     Sun sun;
     Earth earth;
-    double maxEarthX, maxEarthY, maxEarthZ = 0.0f;
-    getEarthOrbit(sun ,earth, deltatT, maxEarthX, maxEarthY, maxEarthZ);
-    std::cout << maxEarthX << " / " << maxEarthY << " / " << maxEarthZ;
+    double earthOrbit = 0.0f;
+    getEarthOrbit(sun ,earth, deltatT, earthOrbit);
 
     Mars mars;
-    const double openGlEarthScale = 0.8e10;
+    const double openGlScale = 0.8e10;
 
     RenderSphere sunSphere;
     sunSphere.init(3);
@@ -316,7 +313,7 @@ int main()
         sunSphere.draw();
 
         glm::mat4 modelEarth = glm::translate(glm::mat4(1.0f),
-                                              glm::vec3(earth.x / openGlEarthScale, earth.y / openGlEarthScale, earth.z / openGlEarthScale));
+                                              glm::vec3(earth.x / openGlScale, earth.y / openGlScale, earth.z / openGlScale));
         MVP = projection * view * modelEarth;
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
@@ -324,7 +321,7 @@ int main()
         earthSphere.draw();
 
         glm::mat4 modelMars = glm::translate(glm::mat4(1.0f),
-                                             glm::vec3(mars.x / openGlEarthScale, mars.y / openGlEarthScale, mars.z / openGlEarthScale));
+                                             glm::vec3(mars.x / openGlScale, mars.y / openGlScale, mars.z / openGlScale));
         MVP = projection * view * modelMars;
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
@@ -332,7 +329,7 @@ int main()
         marsSphere.draw();
 
         glm::mat4 modelOrbit = glm::scale(glm::mat4(1.0f),
-                                             glm::vec3(maxEarthY, maxEarthY, maxEarthY));
+                                             glm::vec3(earthOrbit, earthOrbit, earthOrbit));
         MVP = projection * view * modelOrbit;
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
