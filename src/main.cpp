@@ -21,7 +21,7 @@ static float renderDistance = 1000.0f;
 static const std::string WINDOW_TITLE = "Gravity";
 int days = 10;
 int pause = 0;
-double maxFPS = 50;
+double maxFPS = 1.0 / 50.0;
 
 struct Camera
 {
@@ -213,7 +213,7 @@ int main()
     }
 
     glfwMakeContextCurrent(window);
-    glfwSwapInterval(1); // VSync
+    glfwSwapInterval(0); // VSync
     glfwSetKeyCallback(window, onKey);
     glfwSetFramebufferSizeCallback(window, onResize);
 
@@ -274,7 +274,7 @@ int main()
     double lastTime = glfwGetTime();
     int frames = 0;
 
-    double deltatT = 1 / maxFPS * 3600.0 * days;
+    double deltatT = maxFPS * 3600.0 * days;
     Sun sun;
     Earth earth;
     Mars mars;
@@ -296,9 +296,20 @@ int main()
 
     RenderOrbit orbit;
     orbit.init();
+    float lastRenderTime = 0.0f;
 
     while (!glfwWindowShouldClose(window))
     {
+
+        float currentTime = (float)glfwGetTime();
+
+        if (currentTime - lastRenderTime < maxFPS)
+        {
+            glfwPollEvents();
+            continue; // Skip rendering this frame
+        }
+        lastRenderTime = currentTime;
+
         // std::cout << "Sun: " << sun.x << " " << sun.y << " " << sun.z << "\n";
         // std::cout << "Earth: " << earth.x / openGlEarthScale << " " << earth.y / openGlEarthScale << " " << earth.z << "\n";
         // Calcul du FPS dans le titre
@@ -309,13 +320,12 @@ int main()
         {
             std::string title = WINDOW_TITLE + "  |  " + std::to_string(frames) + " FPS" + "   |   1s = " + std::to_string(days) + " days";
             glfwSetWindowTitle(window, title.c_str());
-            maxFPS = frames > maxFPS ? frames : maxFPS;
             frames = 0;
             lastTime = now;
         }
         // deltatT = 3600.0 * days;
-        deltatT = 1 / maxFPS * 3600.0 * 24 * days;
-        
+        deltatT = maxFPS * 3600.0 * 24 * days;
+
         // Clear
         glClearColor(0.05f, 0.05f, 0.12f, 1.0f); // fond bleu nuit
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
