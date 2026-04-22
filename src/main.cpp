@@ -19,6 +19,10 @@ static constexpr int WINDOW_WIDTH = 1280;
 static constexpr int WINDOW_HEIGHT = 720;
 static float renderDistance = 1000.0f;
 static const std::string WINDOW_TITLE = "Gravity";
+int days = 10;
+int pause = 0;
+double maxFPS = 50;
+
 struct Camera
 {
     float yaw = 0.0f;                // angle horizontal (gauche/droite)
@@ -68,6 +72,31 @@ static void onKey(GLFWwindow *window, int key, int /*scancode*/, int action, int
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+    if (key == GLFW_KEY_KP_ADD && action == GLFW_PRESS)
+        days++;
+    if (key == GLFW_KEY_KP_SUBTRACT && action == GLFW_PRESS)
+        days--;
+    // if (key == GLFW_KEY_LEFT_CONTROL && action == GLFW_PRESS)
+    // {
+    //     while (key == GLFW_KEY_LEFT_CONTROL && action == GLFW_PRESS)
+    //     {
+    //         if (key == GLFW_KEY_KP_ADD && action == GLFW_PRESS)
+    //             days += 10;
+    //     }
+    // }
+    // days += 10;
+    // if ((key == GLFW_KEY_LEFT_CONTROL && action == GLFW_PRESS) && (key == GLFW_KEY_KP_SUBTRACT && action == GLFW_PRESS))
+    //     days -= 10;
+    if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && days != 0)
+    {
+        pause = days;
+        days = 0;
+    }
+    else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && days == 0)
+    {
+        days = pause;
+        pause = 0;
+    }
 }
 
 static void onResize(GLFWwindow * /*window*/, int width, int height)
@@ -241,21 +270,18 @@ int main()
 
     glBindVertexArray(0);
 
-
     // ── Boucle de rendu ───────────────────────
     double lastTime = glfwGetTime();
     int frames = 0;
 
-    int days = 4;
-    double deltatT = 3600.0 * days;
+    double deltatT = 1 / maxFPS * 3600.0 * days;
     Sun sun;
     Earth earth;
     Mars mars;
     double earthOrbit = 0.0f;
-    getEarthOrbit(sun ,earth, deltatT, earthOrbit);
+    getEarthOrbit(sun, earth, deltatT, earthOrbit);
     double marsOrbit = 0.0f;
-    getMarsOrbit(sun ,mars, deltatT, marsOrbit);
-
+    getMarsOrbit(sun, mars, deltatT, marsOrbit);
 
     const double openGlScale = 0.8e10;
 
@@ -283,10 +309,13 @@ int main()
         {
             std::string title = WINDOW_TITLE + "  |  " + std::to_string(frames) + " FPS" + "   |   1s = " + std::to_string(days) + " days";
             glfwSetWindowTitle(window, title.c_str());
+            maxFPS = frames > maxFPS ? frames : maxFPS;
             frames = 0;
             lastTime = now;
         }
-
+        // deltatT = 3600.0 * days;
+        deltatT = 1 / maxFPS * 3600.0 * 24 * days;
+        
         // Clear
         glClearColor(0.05f, 0.05f, 0.12f, 1.0f); // fond bleu nuit
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -333,7 +362,7 @@ int main()
         marsSphere.draw();
 
         glm::mat4 modelOrbitEarth = glm::scale(glm::mat4(1.0f),
-                                             glm::vec3(earthOrbit, earthOrbit, earthOrbit));
+                                               glm::vec3(earthOrbit, earthOrbit, earthOrbit));
         MVP = projection * view * modelOrbitEarth;
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
@@ -341,13 +370,12 @@ int main()
         orbit.draw();
 
         glm::mat4 modelOrbitMars = glm::scale(glm::mat4(1.0f),
-                                             glm::vec3(marsOrbit, marsOrbit, marsOrbit));
+                                              glm::vec3(marsOrbit, marsOrbit, marsOrbit));
         MVP = projection * view * modelOrbitMars;
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
         glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.0f, 0.5f, 0.0f);
         orbit.draw();
-        
 
         calculePosition(sun, earth, mars, deltatT);
 
