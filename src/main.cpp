@@ -15,8 +15,8 @@
 // ─────────────────────────────────────────────
 //  Constantes
 // ─────────────────────────────────────────────
-static constexpr int WINDOW_WIDTH = 1280;
-static constexpr int WINDOW_HEIGHT = 720;
+static int WINDOW_WIDTH = 1280;
+static int WINDOW_HEIGHT = 720;
 static float renderDistance = 1000.0f;
 static const std::string WINDOW_TITLE = "Gravity";
 int days = 10;
@@ -28,6 +28,7 @@ Earth earth;
 Mars mars;
 double earthOrbit = 0.0f;
 double marsOrbit = 0.0f;
+const double openGlScale = 0.8e10;
 
 struct Camera
 {
@@ -66,7 +67,6 @@ static const char *FRAGMENT_SHADER_SRC = R"glsl(
     }
 )glsl";
 
-
 // ─────────────────────────────────────────────
 //  Callbacks
 // ─────────────────────────────────────────────
@@ -102,6 +102,8 @@ static void onKey(GLFWwindow *window, int key, int /*scancode*/, int action, int
 static void onResize(GLFWwindow * /*window*/, int width, int height)
 {
     glViewport(0, 0, width, height);
+    WINDOW_WIDTH = width;
+    WINDOW_HEIGHT = height;
 }
 
 static void onMouseButton(GLFWwindow *window, int button, int action, int /*mods*/)
@@ -277,13 +279,11 @@ int main()
     getEarthOrbit(sun, earth, deltatT, earthOrbit);
     getMarsOrbit(sun, mars, deltatT, marsOrbit);
 
-    const double openGlScale = 0.8e10;
-
     RenderSphere sunSphere;
-    sunSphere.init(3);
+    sunSphere.init(7);
 
     RenderSphere earthSphere;
-    earthSphere.init(1);
+    earthSphere.init(1.3);
 
     RenderSphere marsSphere;
     marsSphere.init(0.8);
@@ -354,7 +354,7 @@ int main()
         MVP = projection * view * modelEarth;
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.2f, 0.5f, 1.0f);
+        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.20f, 0.65f, 0.89f);
         earthSphere.draw();
 
         glm::mat4 modelMars = glm::translate(glm::mat4(1.0f),
@@ -362,7 +362,7 @@ int main()
         MVP = projection * view * modelMars;
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.8f, 0.2f, 1.0f);
+        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.91f, 0.31f, 0.18f);
         marsSphere.draw();
 
         glm::mat4 modelOrbitEarth = glm::scale(glm::mat4(1.0f),
@@ -370,7 +370,7 @@ int main()
         MVP = projection * view * modelOrbitEarth;
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.0f, 0.5f, 0.0f);
+        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.20f, 0.65f, 0.89f);
         orbit.draw();
 
         glm::mat4 modelOrbitMars = glm::scale(glm::mat4(1.0f),
@@ -378,7 +378,7 @@ int main()
         MVP = projection * view * modelOrbitMars;
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.0f, 0.5f, 0.0f);
+        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.91f, 0.31f, 0.18f);
         orbit.draw();
 
         calculePosition(sun, earth, mars, deltatT);
