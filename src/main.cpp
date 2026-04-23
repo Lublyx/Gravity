@@ -22,6 +22,12 @@ static const std::string WINDOW_TITLE = "Gravity";
 int days = 10;
 int pause = 0;
 double maxFPS = 1.0 / 50.0;
+double deltatT = maxFPS * 3600.0 * days;
+Sun sun;
+Earth earth;
+Mars mars;
+double earthOrbit = 0.0f;
+double marsOrbit = 0.0f;
 
 struct Camera
 {
@@ -60,6 +66,7 @@ static const char *FRAGMENT_SHADER_SRC = R"glsl(
     }
 )glsl";
 
+
 // ─────────────────────────────────────────────
 //  Callbacks
 // ─────────────────────────────────────────────
@@ -72,21 +79,14 @@ static void onKey(GLFWwindow *window, int key, int /*scancode*/, int action, int
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
-    if (key == GLFW_KEY_KP_ADD && action == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_RELEASE && key == GLFW_KEY_KP_ADD && action == GLFW_PRESS)
         days++;
-    if (key == GLFW_KEY_KP_SUBTRACT && action == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_RELEASE && key == GLFW_KEY_KP_SUBTRACT && action == GLFW_PRESS)
         days--;
-    // if (key == GLFW_KEY_LEFT_CONTROL && action == GLFW_PRESS)
-    // {
-    //     while (key == GLFW_KEY_LEFT_CONTROL && action == GLFW_PRESS)
-    //     {
-    //         if (key == GLFW_KEY_KP_ADD && action == GLFW_PRESS)
-    //             days += 10;
-    //     }
-    // }
-    // days += 10;
-    // if ((key == GLFW_KEY_LEFT_CONTROL && action == GLFW_PRESS) && (key == GLFW_KEY_KP_SUBTRACT && action == GLFW_PRESS))
-    //     days -= 10;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && key == GLFW_KEY_KP_ADD && action == GLFW_PRESS)
+        days += 10;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && key == GLFW_KEY_KP_SUBTRACT && action == GLFW_PRESS)
+        days -= 10;
     if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && days != 0)
     {
         pause = days;
@@ -274,13 +274,7 @@ int main()
     double lastTime = glfwGetTime();
     int frames = 0;
 
-    double deltatT = maxFPS * 3600.0 * days;
-    Sun sun;
-    Earth earth;
-    Mars mars;
-    double earthOrbit = 0.0f;
     getEarthOrbit(sun, earth, deltatT, earthOrbit);
-    double marsOrbit = 0.0f;
     getMarsOrbit(sun, mars, deltatT, marsOrbit);
 
     const double openGlScale = 0.8e10;
@@ -372,7 +366,7 @@ int main()
         marsSphere.draw();
 
         glm::mat4 modelOrbitEarth = glm::scale(glm::mat4(1.0f),
-                                               glm::vec3(earthOrbit, earthOrbit, earthOrbit));
+                                               glm::vec3(earthOrbit / openGlScale, earthOrbit / openGlScale, earthOrbit / openGlScale));
         MVP = projection * view * modelOrbitEarth;
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
@@ -380,7 +374,7 @@ int main()
         orbit.draw();
 
         glm::mat4 modelOrbitMars = glm::scale(glm::mat4(1.0f),
-                                              glm::vec3(marsOrbit, marsOrbit, marsOrbit));
+                                              glm::vec3(marsOrbit / openGlScale, marsOrbit / openGlScale, marsOrbit / openGlScale));
         MVP = projection * view * modelOrbitMars;
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
