@@ -31,7 +31,7 @@ struct Camera
 {
     float yaw = 0.0f;                // angle horizontal (gauche/droite)
     float pitch = 20.0f;             // angle vertical   (haut/bas)
-    float distance = 70.0f;          // distance au centre
+    float distance = 150.0f;          // distance au centre
     bool dragging = false;           // clic droit enfoncé ?
     double lastX = 0.0, lastY = 0.0; // dernière position souris
 } cam;
