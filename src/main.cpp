@@ -11,6 +11,7 @@
 #include <Class.hpp>
 #include <RenderSphere.hpp>
 #include <RenderOrbit.hpp>
+#include <3Dengine.hpp>
 
 // ─────────────────────────────────────────────
 //  Constantes
@@ -23,12 +24,8 @@ int days = 10;
 int pause = 0;
 double maxFPS = 1.0 / 50.0;
 double deltatT = maxFPS * 3600.0 * days;
-Sun sun;
-Earth earth;
-Mars mars;
-double earthOrbit = 0.0f;
-double marsOrbit = 0.0f;
-const double openGlScale = 0.8e10;
+Planets planets;
+const double openGlScale = 0.5e10;
 
 struct Camera
 {
@@ -275,21 +272,18 @@ int main()
     // ── Boucle de rendu ───────────────────────
     double lastTime = glfwGetTime();
     int frames = 0;
+    Orbits orbits;
 
-    getEarthOrbit(sun, earth, deltatT, earthOrbit);
-    getMarsOrbit(sun, mars, deltatT, marsOrbit);
+    getEarthOrbit(planets.sun, planets.earth, deltatT, orbits.earthOrbit);
+    getMarsOrbit(planets.sun, planets.mars, deltatT, orbits.marsOrbit);
 
-    RenderSphere sunSphere;
-    sunSphere.init(7);
+    RenderMesh meshes;
+    meshes.sunSphere.init(7);
+    meshes.earthSphere.init(1.3);
+    meshes.marsSphere.init(0.8);
+    meshes.orbit.init();
+    
 
-    RenderSphere earthSphere;
-    earthSphere.init(1.3);
-
-    RenderSphere marsSphere;
-    marsSphere.init(0.8);
-
-    RenderOrbit orbit;
-    orbit.init();
     float lastRenderTime = 0.0f;
 
     while (!glfwWindowShouldClose(window))
@@ -341,47 +335,9 @@ int main()
 
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), float(WINDOW_WIDTH) / float(WINDOW_HEIGHT), 0.01f, renderDistance);
 
-        glm::mat4 modelSun = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+        RenderObject(projection, view, shaderProg, openGlScale, meshes, orbits, planets);
 
-        glm::mat4 MVP = projection * view * modelSun;
-
-        glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 1.0f, 0.9f, 0.2f);
-        sunSphere.draw();
-
-        glm::mat4 modelEarth = glm::translate(glm::mat4(1.0f),
-                                              glm::vec3(earth.x / openGlScale, earth.y / openGlScale, earth.z / openGlScale));
-        MVP = projection * view * modelEarth;
-
-        glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.20f, 0.65f, 0.89f);
-        earthSphere.draw();
-
-        glm::mat4 modelMars = glm::translate(glm::mat4(1.0f),
-                                             glm::vec3(mars.x / openGlScale, mars.y / openGlScale, mars.z / openGlScale));
-        MVP = projection * view * modelMars;
-
-        glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.91f, 0.31f, 0.18f);
-        marsSphere.draw();
-
-        glm::mat4 modelOrbitEarth = glm::scale(glm::mat4(1.0f),
-                                               glm::vec3(earthOrbit / openGlScale, earthOrbit / openGlScale, earthOrbit / openGlScale));
-        MVP = projection * view * modelOrbitEarth;
-
-        glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.20f, 0.65f, 0.89f);
-        orbit.draw();
-
-        glm::mat4 modelOrbitMars = glm::scale(glm::mat4(1.0f),
-                                              glm::vec3(marsOrbit / openGlScale, marsOrbit / openGlScale, marsOrbit / openGlScale));
-        MVP = projection * view * modelOrbitMars;
-
-        glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
-        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.91f, 0.31f, 0.18f);
-        orbit.draw();
-
-        calculePosition(sun, earth, mars, deltatT);
+        calculePosition(planets.sun, planets.earth, planets.mars, deltatT);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

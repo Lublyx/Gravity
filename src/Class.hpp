@@ -1,4 +1,6 @@
 #pragma once
+#include <RenderSphere.hpp>
+#include <RenderOrbit.hpp>
 
 class Sun
 {
@@ -12,7 +14,7 @@ public:
 class Earth
 {
 public:
-    double x; 
+    double x;
     double y;
     double z;
     double vx;
@@ -24,7 +26,7 @@ public:
 class Mars
 {
 public:
-    double x; 
+    double x;
     double y;
     double z;
     double vx;
@@ -32,3 +34,25 @@ public:
     double vz;
     Mars();
 };
+
+struct RenderMesh
+{
+    RenderSphere sunSphere;
+    RenderSphere earthSphere;
+    RenderSphere marsSphere;
+    RenderOrbit orbit;
+};
+
+struct Orbits
+{
+    double earthOrbit = 0.0f;
+    double marsOrbit = 0.0f;
+};
+
+struct Planets
+{
+    Sun sun;
+    Earth earth;
+    Mars mars;
+};
+
