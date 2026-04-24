@@ -25,13 +25,13 @@ int pause = 0;
 double maxFPS = 1.0 / 50.0;
 double deltatT = maxFPS * 3600.0 * days;
 Planets planets;
-const double openGlScale = 0.5e10;
+const double openGlScale = 0.2e10;
 
 struct Camera
 {
     float yaw = 0.0f;                // angle horizontal (gauche/droite)
     float pitch = 20.0f;             // angle vertical   (haut/bas)
-    float distance = 150.0f;          // distance au centre
+    float distance = 200.0f;          // distance au centre
     bool dragging = false;           // clic droit enfoncé ?
     double lastX = 0.0, lastY = 0.0; // dernière position souris
 } cam;
@@ -276,12 +276,15 @@ int main()
 
     getEarthOrbit(planets.sun, planets.earth, deltatT, orbits.earthOrbit);
     getMarsOrbit(planets.sun, planets.mars, deltatT, orbits.marsOrbit);
+    getMercuryOrbit(planets.sun, planets.mercury, deltatT, orbits.mercuryrbit);
 
     RenderMesh meshes;
-    meshes.sunSphere.init(7);
-    meshes.earthSphere.init(1.3);
-    meshes.marsSphere.init(0.8);
+    meshes.sunSphere.init(10);
+    meshes.earthSphere.init(2);
+    meshes.marsSphere.init(1.5);
+    meshes.mercurySphere.init(0.8);
     meshes.orbit.init();
+
     
 
     float lastRenderTime = 0.0f;

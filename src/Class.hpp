@@ -35,11 +35,25 @@ public:
     Mars();
 };
 
+class Mercury
+{
+public:
+    double x;
+    double y;
+    double z;
+    double vx;
+    double vy;
+    double vz;
+    Mercury();
+};
+
+
 struct RenderMesh
 {
     RenderSphere sunSphere;
     RenderSphere earthSphere;
     RenderSphere marsSphere;
+    RenderSphere mercurySphere;
     RenderOrbit orbit;
 };
 
@@ -47,6 +61,7 @@ struct Orbits
 {
     double earthOrbit = 0.0f;
     double marsOrbit = 0.0f;
+    double mercuryrbit = 0.0f;
 };
 
 struct Planets
@@ -54,5 +69,6 @@ struct Planets
     Sun sun;
     Earth earth;
     Mars mars;
+    Mercury mercury;
 };
 

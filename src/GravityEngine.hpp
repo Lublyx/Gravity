@@ -24,3 +24,6 @@ double getPlanetVectorZ(Sun &sun, double planetZ);
 
 double getVectorForce(double vector, double r, double planetM);
 
+void calculPositionMercury(Sun &sun, Mercury &mercury, double deltaT);
+
+void getMercuryOrbit(Sun &sun, Mercury &mercury, double deltaT, double &mercuryOrbit);

@@ -13,6 +13,8 @@ const double earthM = 5.972e24;
 // Masse Terre
 const double marsM = 6.4185e23;
 // Masse Mars
+const double mercuryM = 3.3011e23;
+// Masse Mercure
 
 void calculPosition(Planets &planets, double deltaT)
 {
@@ -25,9 +27,11 @@ void calculPosition(Planets &planets, double deltaT)
     // }
     // std::cout << E << std::endl;
 
-    calculePositionEarth(planets.sun, planets.earth, deltaT);
+    calculPositionEarth(planets.sun, planets.earth, deltaT);
 
-    calculePositionMars(planets.sun, planets.mars, deltaT);
+    calculPositionMars(planets.sun, planets.mars, deltaT);
+
+    calculPositionMercury(planets.sun, planets.mercury, deltaT);
 }
 
 void calculPositionEarth(Sun &sun, Earth &earth, double deltaT)
@@ -104,6 +108,44 @@ void getMarsOrbit(Sun &sun, Mars &mars, double deltaT, double &marsOrbit)
         calculPositionMars(sun, mars, deltaT);
         if (mars.y > marsOrbit) marsOrbit = mars.y;
     } while (marsBaseX != mars.x && marsBaseY != mars.y && marsBaseZ != mars.z);
+}
+
+void calculPositionMercury(Sun &sun, Mercury &mercury, double deltaT)
+{
+    double vecXMercurySun = getPlanetVectorX(sun, mercury.x);
+    double vecYMercurySun = getPlanetVectorY(sun, mercury.y);
+    double vecZMercurySun = getPlanetVectorZ(sun, mercury.z);
+
+    double r = getPlanetSunDistance(vecXMercurySun, vecYMercurySun, vecZMercurySun);
+
+    double forceVecX = getVectorForce(vecXMercurySun, r, mercuryM);
+    double forceVecY = getVectorForce(vecYMercurySun, r, mercuryM);
+    double forceVecZ = getVectorForce(vecZMercurySun, r, mercuryM);
+
+    double accelerationMercuryX = getAcceleration(forceVecX, mercuryM);
+    double accelerationMercuryY = getAcceleration(forceVecY, mercuryM);
+    double accelerationMercuryZ = getAcceleration(forceVecZ, mercuryM);
+
+    mercury.vx += accelerationMercuryX * deltaT;
+    mercury.vy += accelerationMercuryY * deltaT;
+    mercury.vz += accelerationMercuryZ * deltaT;
+
+    mercury.x += mercury.vx * deltaT;
+    mercury.y += mercury.vy * deltaT;
+    mercury.z += mercury.vz * deltaT;
+}
+
+void getMercuryOrbit(Sun &sun, Mercury &mercury, double deltaT, double &mercuryOrbit)
+{
+    double mercuryBaseX = mercury.x;
+    double mercuryBaseY = mercury.y;
+    double mercuryBaseZ = mercury.z;
+
+    do
+    {
+        calculPositionMercury(sun, mercury, deltaT);
+        if (mercury.y > mercuryOrbit) mercuryOrbit = mercury.y;
+    } while (mercuryBaseX != mercury.x && mercuryBaseY != mercury.y && mercuryBaseZ != mercury.z);
 }
 
 double getAcceleration(double forceVec, double planetM)

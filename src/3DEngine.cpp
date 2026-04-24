@@ -33,6 +33,14 @@ void RenderObject(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, doubl
     glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.91f, 0.31f, 0.18f);
     meshes.marsSphere.draw();
 
+    glm::mat4 modelMercury = glm::translate(glm::mat4(1.0f),
+                                         glm::vec3(planets.mercury.x / scale, planets.mercury.y / scale, planets.mercury.z / scale));
+    MVP = projection * view * modelMercury;
+
+    glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+    glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.73f, 0.72f, 0.75f);
+    meshes.mercurySphere.draw();
+
     glm::mat4 modelOrbitEarth = glm::scale(glm::mat4(1.0f),
                                            glm::vec3(orbits.earthOrbit / scale, orbits.earthOrbit / scale, orbits.earthOrbit / scale));
     MVP = projection * view * modelOrbitEarth;
@@ -47,5 +55,13 @@ void RenderObject(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, doubl
 
     glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
     glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.91f, 0.31f, 0.18f);
+    meshes.orbit.draw();
+
+    glm::mat4 modelOrbitMercury = glm::scale(glm::mat4(1.0f),
+                                          glm::vec3(orbits.mercuryrbit / scale, orbits.mercuryrbit / scale, orbits.mercuryrbit / scale));
+    MVP = projection * view * modelOrbitMercury;
+
+    glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+    glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 0.73f, 0.72f, 0.75f);
     meshes.orbit.draw();
 }
