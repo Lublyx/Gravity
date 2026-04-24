@@ -14,7 +14,7 @@ const double earthM = 5.972e24;
 const double marsM = 6.4185e23;
 // Masse Mars
 
-void calculePosition(Sun &sun, Earth &earth, Mars &mars, double deltaT)
+void calculPosition(Planets &planets, double deltaT)
 {
 
     // double E = (0.5 * (earthVelocity * earthVelocity)) - ((G * sunM) / r);
@@ -25,12 +25,12 @@ void calculePosition(Sun &sun, Earth &earth, Mars &mars, double deltaT)
     // }
     // std::cout << E << std::endl;
 
-    calculePositionEarth(sun, earth, deltaT);
+    calculePositionEarth(planets.sun, planets.earth, deltaT);
 
-    calculePositionMars(sun, mars, deltaT);
+    calculePositionMars(planets.sun, planets.mars, deltaT);
 }
 
-void calculePositionEarth(Sun &sun, Earth &earth, double deltaT)
+void calculPositionEarth(Sun &sun, Earth &earth, double deltaT)
 {
     double vecXEarthSun = getPlanetVectorX(sun, earth.x);
     double vecYEarthSun = getPlanetVectorY(sun, earth.y);
@@ -63,12 +63,12 @@ void getEarthOrbit(Sun &sun, Earth &earth, double deltaT, double &earthOrbit)
 
     do
     {
-        calculePositionEarth(sun, earth, deltaT);
+        calculPositionEarth(sun, earth, deltaT);
         if (earth.y > earthOrbit) earthOrbit = earth.y;
     } while (earthBaseX != earth.x && earthBaseY != earth.y && earthBaseZ != earth.z);
 }
 
-void calculePositionMars(Sun &sun, Mars &mars, double deltaT)
+void calculPositionMars(Sun &sun, Mars &mars, double deltaT)
 {
     double vecXMarsSun = getPlanetVectorX(sun, mars.x);
     double vecYMarsSun = getPlanetVectorY(sun, mars.y);
@@ -101,7 +101,7 @@ void getMarsOrbit(Sun &sun, Mars &mars, double deltaT, double &marsOrbit)
 
     do
     {
-        calculePositionMars(sun, mars, deltaT);
+        calculPositionMars(sun, mars, deltaT);
         if (mars.y > marsOrbit) marsOrbit = mars.y;
     } while (marsBaseX != mars.x && marsBaseY != mars.y && marsBaseZ != mars.z);
 }

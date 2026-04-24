@@ -337,7 +337,7 @@ int main()
 
         RenderObject(projection, view, shaderProg, openGlScale, meshes, orbits, planets);
 
-        calculePosition(planets.sun, planets.earth, planets.mars, deltatT);
+        calculPosition(planets, deltatT);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -2,13 +2,13 @@
 
 #include "Class.hpp"
 
-void calculePosition(Sun& sun, Earth& earth, Mars& mars, double deltaT);
+void calculPosition(Planets &planets, double deltaT);
 
-void calculePositionEarth(Sun &sun, Earth &earth, double deltaT);
+void calculPositionEarth(Sun &sun, Earth &earth, double deltaT);
 
 void getEarthOrbit(Sun &sun, Earth &earth, double deltaT, double &earthOrbit);
 
-void calculePositionMars(Sun &sun, Mars &mars, double deltaT);
+void calculPositionMars(Sun &sun, Mars &mars, double deltaT);
 
 void getMarsOrbit(Sun &sun, Mars &mars, double deltaT, double &earthOrbit);
 
