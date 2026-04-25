@@ -23,7 +23,7 @@ static const std::string WINDOW_TITLE = "Gravity";
 int days = 10;
 int pause = 0;
 double maxFPS = 1.0 / 50.0;
-double deltatT = maxFPS * 3600.0 * days;
+double deltaT = maxFPS * 3600.0 * days;
 Planets planets;
 const double openGlScale = 0.2e10;
 
@@ -274,9 +274,10 @@ int main()
     int frames = 0;
     Orbits orbits;
 
-    getEarthOrbit(planets.sun, planets.earth, deltatT, orbits.earthOrbit);
-    getMarsOrbit(planets.sun, planets.mars, deltatT, orbits.marsOrbit);
-    getMercuryOrbit(planets.sun, planets.mercury, deltatT, orbits.mercuryrbit);
+    planets.earth.getOrbit(planets.sun, planets.earth, deltaT);
+    // getEarthOrbit(planets.sun, planets.earth, deltatT, orbits.earthOrbit);
+    // getMarsOrbit(planets.sun, planets.mars, deltatT, orbits.marsOrbit);
+    // getMercuryOrbit(planets.sun, planets.mercury, deltatT, orbits.mercuryrbit);
 
     RenderMesh meshes;
     initMeshes(meshes);
@@ -309,7 +310,7 @@ int main()
             lastTime = now;
         }
         // deltatT = 3600.0 * days;
-        deltatT = maxFPS * 3600.0 * 24 * days;
+        deltaT = maxFPS * 3600.0 * 24 * days;
 
         // Clear
         glClearColor(0.05f, 0.05f, 0.12f, 1.0f); // fond bleu nuit
@@ -334,7 +335,7 @@ int main()
 
         RenderObject(projection, view, shaderProg, openGlScale, meshes, orbits, planets);
 
-        calculPosition(planets, deltatT);
+        calculPosition(planets, deltaT);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -12,15 +12,15 @@ void calculPositionMars(Sun &sun, Mars &mars, double deltaT);
 
 void getMarsOrbit(Sun &sun, Mars &mars, double deltaT, double &earthOrbit);
 
-double getAcceleration(double forceVec, double planetM);
+double getAcceleration(double forceVec, double planetM, double deltaT);
 
 double getPlanetSunDistance(double vecX, double vecY, double vecZ);
 
-double getPlanetVectorX(Sun &sun, double planetX);
+double getPlanetVectorX(double sunX, double planetX);
 
-double getPlanetVectorY(Sun &sun, double planetY);
+double getPlanetVectorY(double sunY, double planetY);
 
-double getPlanetVectorZ(Sun &sun, double planetZ);
+double getPlanetVectorZ(double sunZ, double planetZ);
 
 double getVectorForce(double vector, double r, double planetM);
 
