@@ -1,6 +1,6 @@
 #pragma once
-#include <RenderSphere.hpp>
-#include <RenderOrbit.hpp>
+#include <Renders/RenderSphere.hpp>
+#include <Renders/RenderOrbit.hpp>
 
 class Sun
 {

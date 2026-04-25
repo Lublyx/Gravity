@@ -7,11 +7,11 @@
 #include <iostream>
 #include <string>
 #include <cmath>
-#include <GravityEngine.hpp>
-#include <Class.hpp>
-#include <RenderSphere.hpp>
-#include <RenderOrbit.hpp>
-#include <3Dengine.hpp>
+#include <GravityEngine/GravityEngine.hpp>
+#include <Classes/Class.hpp>
+#include <Renders/RenderSphere.hpp>
+#include <Renders/RenderOrbit.hpp>
+#include <3DEngine/3Dengine.hpp>
 
 // ─────────────────────────────────────────────
 //  Constantes
@@ -279,13 +279,7 @@ int main()
     getMercuryOrbit(planets.sun, planets.mercury, deltatT, orbits.mercuryrbit);
 
     RenderMesh meshes;
-    meshes.sunSphere.init(15);
-    meshes.earthSphere.init(3);
-    meshes.marsSphere.init(2);
-    meshes.mercurySphere.init(1.3);
-    meshes.orbit.init();
-
-    
+    initMeshes(meshes);
 
     float lastRenderTime = 0.0f;
 

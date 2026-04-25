@@ -1,5 +1,5 @@
-#include <Class.hpp>
-#include <GravityEngine.hpp>
+#include <Classes/Class.hpp>
+#include <GravityEngine/GravityEngine.hpp>
 #include <iostream>
 #include <cmath>
 

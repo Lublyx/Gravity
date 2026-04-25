@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Class.hpp"
+#include <Classes/Class.hpp>
 
 void calculPosition(Planets &planets, double deltaT);
 
