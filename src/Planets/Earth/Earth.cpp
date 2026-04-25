@@ -10,5 +10,5 @@ Earth::Earth()
     vy = 0.0;
     vz = 0.0;
     masse = 5.972e24;
-    planetOrbit = 0.0f;
+    orbit = 0.0f;
 }

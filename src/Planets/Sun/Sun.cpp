@@ -10,6 +10,6 @@
         vy = 0.0;
         vz = 0.0;
         masse = 1.989e30;
-        planetOrbit = 0.0f;
+        orbit = 0.0f;
     }
 

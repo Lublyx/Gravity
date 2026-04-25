@@ -31,7 +31,7 @@ void IPlanets::getOrbit(IPlanets &sun, IPlanets &planet, double deltaT)
     do
     {
         calculPosition(sun, planet, deltaT);
-        if (planet.y > planetOrbit)
-            planetOrbit = planet.y;
+        if (planet.y > orbit)
+            orbit = planet.y;
     } while (BaseX != planet.x && BaseY != planet.y && BaseZ != planet.z);
 }

@@ -10,7 +10,7 @@ public:
     double vy;
     double vz;
     double masse;
-    double planetOrbit;
+    double orbit;
 
     virtual void calculPosition(IPlanets &sun, IPlanets &planet, double deltaT);
     virtual void getOrbit(IPlanets &sun, IPlanets &planet, double deltaT);

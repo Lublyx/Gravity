@@ -8,7 +8,7 @@
 #include <string>
 #include <cmath>
 #include <GravityEngine/GravityEngine.hpp>
-#include <Classes/Class.hpp>
+#include <Classes/Structs.hpp>
 #include <Renders/RenderSphere.hpp>
 #include <Renders/RenderOrbit.hpp>
 #include <3DEngine/3Dengine.hpp>
@@ -18,7 +18,7 @@
 // ─────────────────────────────────────────────
 static int WINDOW_WIDTH = 1280;
 static int WINDOW_HEIGHT = 720;
-static float renderDistance = 1000.0f;
+static float renderDistance = 1500.0f;
 static const std::string WINDOW_TITLE = "Gravity";
 int days = 10;
 int pause = 0;
@@ -272,13 +272,9 @@ int main()
     // ── Boucle de rendu ───────────────────────
     double lastTime = glfwGetTime();
     int frames = 0;
-    Orbits orbits;
-
-    planets.earth.getOrbit(planets.sun, planets.earth, deltaT);
-    // getEarthOrbit(planets.sun, planets.earth, deltatT, orbits.earthOrbit);
-    // getMarsOrbit(planets.sun, planets.mars, deltatT, orbits.marsOrbit);
-    // getMercuryOrbit(planets.sun, planets.mercury, deltatT, orbits.mercuryrbit);
-
+    
+    calculOrbit(planets, deltaT);
+    
     RenderMesh meshes;
     initMeshes(meshes);
 
@@ -333,7 +329,7 @@ int main()
 
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), float(WINDOW_WIDTH) / float(WINDOW_HEIGHT), 0.01f, renderDistance);
 
-        RenderObject(projection, view, shaderProg, openGlScale, meshes, orbits, planets);
+        RenderObject(projection, view, shaderProg, openGlScale, meshes, planets);
 
         calculPosition(planets, deltaT);
 
