@@ -11,17 +11,19 @@
 
 void RenderObject(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, double scale, Planets &planets)
 {
-
     planets.sun.render(projection, view, shaderProg, scale);
     planets.earth.render(projection, view, shaderProg, scale);
     planets.mars.render(projection, view, shaderProg, scale);
     planets.mercury.render(projection, view, shaderProg, scale);
     planets.venus.render(projection, view, shaderProg, scale);
+    planets.jupiter.render(projection, view, shaderProg, scale);
+    planets.neptune.render(projection, view, shaderProg, scale);
+    planets.saturn.render(projection, view, shaderProg, scale);
+    planets.uranus.render(projection, view, shaderProg, scale);
 }
 
-// ─────────────────────────────────────────────
-//  Shaders (inline pour la base)
-// ─────────────────────────────────────────────
+
+//  Shaders 
 static const char *VERTEX_SHADER_SRC = R"glsl(
     #version 330 core
     layout(location = 0) in vec3 aPos;
@@ -47,9 +49,7 @@ static const char *FRAGMENT_SHADER_SRC = R"glsl(
     }
 )glsl";
 
-// ─────────────────────────────────────────────
 //  Compilation d'un shader
-// ─────────────────────────────────────────────
 static GLuint compileShader(GLenum type, const char *src)
 {
     GLuint id = glCreateShader(type);

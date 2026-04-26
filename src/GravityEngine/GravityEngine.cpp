@@ -21,6 +21,10 @@ void calculPosition(Planets &planets, double deltaT)
     planets.mars.calculPosition(planets.sun, planets.mars, deltaT);
     planets.mercury.calculPosition(planets.sun, planets.mercury, deltaT);
     planets.venus.calculPosition(planets.sun, planets.venus, deltaT);
+    planets.saturn.calculPosition(planets.sun, planets.saturn, deltaT);
+    planets.neptune.calculPosition(planets.sun, planets.neptune, deltaT);
+    planets.jupiter.calculPosition(planets.sun, planets.jupiter, deltaT);
+    planets.uranus.calculPosition(planets.sun, planets.uranus, deltaT);
 }
 
 void calculOrbit(Planets &planets, double deltaT)
@@ -29,6 +33,10 @@ void calculOrbit(Planets &planets, double deltaT)
     planets.mars.getOrbit(planets.sun, planets.mars, deltaT);
     planets.mercury.getOrbit(planets.sun, planets.mercury, deltaT);
     planets.venus.getOrbit(planets.sun, planets.venus, deltaT);
+    planets.saturn.getOrbit(planets.sun, planets.saturn, deltaT);
+    planets.neptune.getOrbit(planets.sun, planets.neptune, deltaT);
+    planets.jupiter.getOrbit(planets.sun, planets.jupiter, deltaT);
+    planets.uranus.getOrbit(planets.sun, planets.uranus, deltaT);
 }
 
 double getAcceleration(double forceVec, double planetM, double deltaT)

@@ -1,0 +1,16 @@
+#include <Planets/Uranus/Uranus.hpp>
+
+Uranus::Uranus(){
+    x = 0.0f;
+    y = 2.8707e12;
+    z = 0.0f;
+    vx = 6796.732;
+    vy = 0.0f;
+    vz = 0.0f;
+    masse = 8.6810e25;
+    sphere.init(6);
+    orbit = 0.0f;
+    r = 0.40f;
+    g = 0.80f;
+    b = 0.81f;
+}
