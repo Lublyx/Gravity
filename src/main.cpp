@@ -16,7 +16,7 @@
 // ─────────────────────────────────────────────
 static int WINDOW_WIDTH = 1280;
 static int WINDOW_HEIGHT = 720;
-static float renderDistance = 1500.0f;
+static float renderDistance = 12000.0f;
 static const std::string WINDOW_TITLE = "Gravity";
 int days = 10;
 int pause = 0;
@@ -28,7 +28,7 @@ struct Camera
 {
     float yaw = 0.0f;                // angle horizontal (gauche/droite)
     float pitch = 20.0f;             // angle vertical   (haut/bas)
-    float distance = 500.0f;         // distance au centre
+    float distance = 700.0f;         // distance au centre
     bool dragging = false;           // clic droit enfoncé ?
     double lastX = 0.0, lastY = 0.0; // dernière position souris
 } cam;
@@ -104,7 +104,7 @@ static void onMouseMove(GLFWwindow *window, double x, double y)
 static void onScroll(GLFWwindow *window, double /*dx*/, double dy)
 {
     Camera *cam = (Camera *)glfwGetWindowUserPointer(window);
-    cam->distance = glm::clamp((float)(cam->distance - dy * 3.0f), 0.5f, 1000.0f);
+    cam->distance = glm::clamp((float)(cam->distance - dy * 10.0f), 0.5f, 6000.0f);
 }
 
 // ─────────────────────────────────────────────
