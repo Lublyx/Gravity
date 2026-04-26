@@ -39,5 +39,4 @@ struct RenderSphere
         glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
-
 };
