@@ -9,8 +9,6 @@
 #include <cmath>
 #include <GravityEngine/GravityEngine.hpp>
 #include <Classes/Structs.hpp>
-#include <Renders/RenderSphere.hpp>
-#include <Renders/RenderOrbit.hpp>
 #include <3DEngine/3Dengine.hpp>
 
 // ─────────────────────────────────────────────
@@ -24,14 +22,13 @@ int days = 10;
 int pause = 0;
 double maxFPS = 1.0 / 50.0;
 double deltaT = maxFPS * 3600.0 * days;
-Planets planets;
 const double openGlScale = 0.2e10;
 
 struct Camera
 {
     float yaw = 0.0f;                // angle horizontal (gauche/droite)
     float pitch = 20.0f;             // angle vertical   (haut/bas)
-    float distance = 500.0f;          // distance au centre
+    float distance = 500.0f;         // distance au centre
     bool dragging = false;           // clic droit enfoncé ?
     double lastX = 0.0, lastY = 0.0; // dernière position souris
 } cam;
@@ -272,11 +269,9 @@ int main()
     // ── Boucle de rendu ───────────────────────
     double lastTime = glfwGetTime();
     int frames = 0;
-    
+    Planets planets;
+
     calculOrbit(planets, deltaT);
-    
-    RenderMesh meshes;
-    initMeshes(meshes);
 
     float lastRenderTime = 0.0f;
 
@@ -329,7 +324,7 @@ int main()
 
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), float(WINDOW_WIDTH) / float(WINDOW_HEIGHT), 0.01f, renderDistance);
 
-        RenderObject(projection, view, shaderProg, openGlScale, meshes, planets);
+        RenderObject(projection, view, shaderProg, openGlScale, planets);
 
         calculPosition(planets, deltaT);
 

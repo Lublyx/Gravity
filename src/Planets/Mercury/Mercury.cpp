@@ -9,4 +9,8 @@ Mercury::Mercury(){
     vz = 0.0f;
     masse = 3.3011e23;
     orbit = 0.0f;
+    sphere.init(1.3);
+    r = 0.73f;
+    g = 0.72f;
+    b = 0.75f;
 }

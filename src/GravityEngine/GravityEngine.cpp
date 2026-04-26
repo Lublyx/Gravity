@@ -1,6 +1,5 @@
 #include <Classes/Structs.hpp>
 #include <GravityEngine/GravityEngine.hpp>
-#include <Planets/Earth/Earth.hpp>
 #include <iostream>
 #include <cmath>
 

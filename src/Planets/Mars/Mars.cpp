@@ -10,4 +10,8 @@ Mars::Mars()
     vz = 0.0f;
     masse = 6.4185e23;
     orbit = 0.0f;
+    sphere.init(2);
+    r = 0.91f;
+    g = 0.31f;
+    b = 0.18f;
 }

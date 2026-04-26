@@ -9,5 +9,9 @@ Venus::Venus(){
     vz = 0.0f;
     masse = 4.8675e24;
     orbit = 0.0f;
+    sphere.init(1.6);
+    r = 0.89f;
+    g = 0.66f;
+    b = 0.37f;
 }
 

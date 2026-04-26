@@ -7,6 +7,4 @@
 
 #include <Classes/Structs.hpp>
 
-void initMeshes(RenderMesh &meshes);
-
-void RenderObject(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, double scale, RenderMesh meshes, Planets &planets);
+void RenderObject(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, double scale, Planets &planets);

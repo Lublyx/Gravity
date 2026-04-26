@@ -11,5 +11,9 @@
         vz = 0.0;
         masse = 1.989e30;
         orbit = 0.0f;
+        sphere.init(15);
+        r = 1.0f;
+        g = 0.9f;
+        b = 0.2f;
     }
 
