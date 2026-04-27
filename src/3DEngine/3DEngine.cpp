@@ -33,7 +33,7 @@ static const char *VERTEX_SHADER_SRC = R"glsl(
     void main()
     {
         gl_Position = uMVP * vec4(aPos, 1.0);
-        gl_PointSize = 12.0;
+        gl_PointSize = 4.0;
     }
 )glsl";
 

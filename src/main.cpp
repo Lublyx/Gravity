@@ -10,13 +10,14 @@
 #include <GravityEngine/GravityEngine.hpp>
 #include <Classes/Structs.hpp>
 #include <3DEngine/3Dengine.hpp>
+#include <Renders/RenderStars.hpp>
 
 // ─────────────────────────────────────────────
 //  Constantes
 // ─────────────────────────────────────────────
 static int WINDOW_WIDTH = 1280;
 static int WINDOW_HEIGHT = 720;
-static float renderDistance = 12000.0f;
+static float renderDistance = 13000.0f;
 static const std::string WINDOW_TITLE = "Gravity";
 int days = 10;
 int pause = 0;
@@ -197,6 +198,8 @@ int main()
     double lastTime = glfwGetTime();
     int frames = 0;
     Planets planets;
+    RenderStars stars;
+    stars.initStars();
 
     calculOrbit(planets, deltaT);
 
@@ -204,7 +207,6 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
-
         float currentTime = (float)glfwGetTime();
 
         if (currentTime - lastRenderTime < maxFPS)
@@ -231,7 +233,7 @@ int main()
         deltaT = maxFPS * 3600.0 * 24 * days;
 
         // Clear
-        glClearColor(0.05f, 0.05f, 0.12f, 1.0f); // fond bleu nuit
+        glClearColor(0.00f, 0.00f, 0.00f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // // Dessin des corps
@@ -254,6 +256,13 @@ int main()
         RenderObject(projection, view, shaderProg, openGlScale, planets);
 
         calculPosition(planets, deltaT);
+
+        glm::mat4 modelsStars = glm::mat4(1.0f);
+        glm::mat4 MVP = projection * view * modelsStars;
+
+        glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+        glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 1.0f, 1.0f, 1.0f);
+        stars.draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
