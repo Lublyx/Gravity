@@ -261,6 +261,7 @@ int main()
         glm::mat4 MVP = projection * view * modelsStars;
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
+        glUniform1f(glGetUniformLocation(shaderProg, "uPointSize"), 2);
         glUniform3f(glGetUniformLocation(shaderProg, "uColor"), 1.0f, 1.0f, 1.0f);
         stars.draw();
 

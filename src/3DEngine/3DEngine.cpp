@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <string>
 
 #include <Classes/Structs.hpp>
 #include <Renders/RenderOrbit.hpp>
@@ -29,11 +30,12 @@ static const char *VERTEX_SHADER_SRC = R"glsl(
     layout(location = 0) in vec3 aPos;
 
     uniform mat4 uMVP;
+    uniform float uPointSize;
 
     void main()
     {
         gl_Position = uMVP * vec4(aPos, 1.0);
-        gl_PointSize = 4.0;
+        gl_PointSize = uPointSize;
     }
 )glsl";
 
