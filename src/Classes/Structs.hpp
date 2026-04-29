@@ -11,14 +11,14 @@
 
 struct Planets
 {
-    IPlanets sun = Sun();
-    IPlanets earth = Earth();
-    IPlanets mars = Mars();
-    IPlanets mercury = Mercury();
-    IPlanets venus = Venus();
-    IPlanets jupiter = Jupiter();
-    IPlanets neptune = Neptune();
-    IPlanets saturn = Saturn();
-    IPlanets uranus = Uranus();
+    Sun sun = Sun();
+    Earth earth = Earth();
+    Mars mars = Mars();
+    Mercury mercury = Mercury();
+    Venus venus = Venus();
+    Jupiter jupiter = Jupiter();
+    Neptune neptune = Neptune();
+    Saturn saturn = Saturn();
+    Uranus uranus = Uranus();
 };
 

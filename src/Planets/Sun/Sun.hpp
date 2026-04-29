@@ -5,4 +5,5 @@ class Sun : public IPlanets
 {
 public:
     Sun();
+    void Feux();
 };

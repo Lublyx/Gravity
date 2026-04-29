@@ -24,6 +24,10 @@ int pause = 0;
 double maxFPS = 1.0 / 50.0;
 double deltaT = maxFPS * 3600.0 * days;
 const double openGlScale = 0.2e10;
+bool isFreeCam;
+glm::vec3 camPos;
+double xpos = WINDOW_WIDTH /2;
+double ypos = WINDOW_HEIGHT/2;
 
 struct Camera
 {
@@ -33,7 +37,6 @@ struct Camera
     bool dragging = false;           // clic droit enfoncé ?
     double lastX = 0.0, lastY = 0.0; // dernière position souris
 } cam;
-
 
 // ─────────────────────────────────────────────
 //  Callbacks
@@ -64,6 +67,10 @@ static void onKey(GLFWwindow *window, int key, int /*scancode*/, int action, int
     {
         days = pause;
         pause = 0;
+    }
+    if (key == GLFW_KEY_F && action == GLFW_PRESS)
+    {
+        isFreeCam = isFreeCam ? false : true;
     }
 }
 
@@ -240,16 +247,50 @@ int main()
         glUseProgram(shaderProg);
 
         // calcule cam position
+        // glfwGetCursorPos(window, &xpos, &ypos);
+        double horizontalAngle = 10.0f * deltaT * float(WINDOW_WIDTH / 2 - xpos);
+        double verticalAngle = 10.0f * deltaT * float(WINDOW_HEIGHT / 2 - ypos);
+        glm::vec3 direction(
+            cos(verticalAngle) * sin(horizontalAngle),
+            sin(verticalAngle),
+            -cos(verticalAngle) * cos(horizontalAngle));
+        glm::vec3 right = glm::vec3(
+            sin(horizontalAngle - 3.14f / 2.0f),
+            0,
+            cos(horizontalAngle - 3.14f / 2.0f));
 
-        float yawRad = glm::radians(cam.yaw);
-        float pitchRad = glm::radians(cam.pitch);
+        if (!isFreeCam)
+        {
+            float yawRad = glm::radians(cam.yaw);
+            float pitchRad = glm::radians(cam.pitch);
 
-        glm::vec3 camPos = glm::vec3(
-            cam.distance * cos(pitchRad) * sin(yawRad),
-            cam.distance * sin(pitchRad),
-            cam.distance * cos(pitchRad) * cos(yawRad));
+            camPos = glm::vec3(
+                cam.distance * cos(pitchRad) * sin(yawRad),
+                cam.distance * sin(pitchRad),
+                cam.distance * cos(pitchRad) * cos(yawRad));
+        }
+        else
+        {
+            if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+            {
+                camPos += direction * 0.001f * (float)deltaT;
+            }
+            if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+            {
+                camPos += right * 0.001f * (float)deltaT;
+            }
+            if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+            {
+                camPos -= direction * 0.001f * (float)deltaT;
+            }
+            if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+            {
+                camPos -= right * 0.001f * (float)deltaT;
+            }
+        }
+        glm::vec3 camDirection = isFreeCam ? camPos + direction : glm::vec3(0.0f);
 
-        glm::mat4 view = glm::lookAt(camPos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        glm::mat4 view = glm::lookAt(camPos, camDirection, glm::vec3(0.0f, 1.0f, 0.0f));
 
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), float(WINDOW_WIDTH) / float(WINDOW_HEIGHT), 0.01f, renderDistance);
 
