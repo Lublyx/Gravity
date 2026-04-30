@@ -21,4 +21,3 @@ struct Planets
     Saturn saturn = Saturn();
     Uranus uranus = Uranus();
 };
-

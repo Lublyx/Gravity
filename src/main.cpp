@@ -247,20 +247,23 @@ int main()
         glUseProgram(shaderProg);
 
         // calcule cam position
-        // glfwGetCursorPos(window, &xpos, &ypos);
-        double horizontalAngle = 10.0f * deltaT * float(WINDOW_WIDTH / 2 - xpos);
-        double verticalAngle = 10.0f * deltaT * float(WINDOW_HEIGHT / 2 - ypos);
+        glfwGetCursorPos(window, &xpos, &ypos);
+        double horizontalAngle = 0.0000001f * deltaT * float(WINDOW_WIDTH / 2 - xpos);
+        double verticalAngle = 0.0000001f * deltaT * float(WINDOW_HEIGHT / 2 - ypos);
         glm::vec3 direction(
             cos(verticalAngle) * sin(horizontalAngle),
             sin(verticalAngle),
-            -cos(verticalAngle) * cos(horizontalAngle));
+            cos(verticalAngle) * cos(horizontalAngle));
         glm::vec3 right = glm::vec3(
             sin(horizontalAngle - 3.14f / 2.0f),
             0,
             cos(horizontalAngle - 3.14f / 2.0f));
+        glm::vec3 up = glm::cross( right, direction );
 
         if (!isFreeCam)
         {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
             float yawRad = glm::radians(cam.yaw);
             float pitchRad = glm::radians(cam.pitch);
 
@@ -271,13 +274,15 @@ int main()
         }
         else
         {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
             if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
             {
                 camPos += direction * 0.001f * (float)deltaT;
             }
             if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
             {
-                camPos += right * 0.001f * (float)deltaT;
+                camPos -= right * 0.001f * (float)deltaT;
             }
             if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
             {
@@ -285,10 +290,10 @@ int main()
             }
             if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
             {
-                camPos -= right * 0.001f * (float)deltaT;
+                camPos += right * 0.001f * (float)deltaT;
             }
         }
-        glm::vec3 camDirection = isFreeCam ? camPos + direction : glm::vec3(0.0f);
+        glm::vec3 camDirection = isFreeCam ? camPos + direction : isFreeCam ? up : glm::vec3(0.0f);
 
         glm::mat4 view = glm::lookAt(camPos, camDirection, glm::vec3(0.0f, 1.0f, 0.0f));
 
