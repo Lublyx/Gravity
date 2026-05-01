@@ -40,14 +40,34 @@ public:
     IPlanets saturn = planets[eSaturn];
     IPlanets uranus = planets[eUranus];
     IPlanets neptune = planets[eNeptune];
+    IPlanets currentPlanet = planets[eSun];
 
-    void Next(IPlanets *currentPlanet)
+    void Next()
     {
-        currentPlanet = cpt < planets.size() - 1 ? &planets[++cpt] : &planets[cpt];
+        currentPlanet = cpt < planets.size() - 1 ? planets[++cpt] : planets[cpt];
     }
 
-    void Previous(IPlanets *currentPlanet)
+    void Previous()
     {
-        currentPlanet = cpt > (size_t)0 ? &planets[--cpt] : &planets[cpt];
+        currentPlanet = cpt > (size_t)0 ? planets[--cpt] : planets[cpt];
+    }
+
+    void Update()
+    {
+        planets[eSun] = sun;
+        planets[eMercury] = mercury;
+        planets[eVenus] = venus;
+        planets[eEarth] = earth;
+        planets[eMars] = mars;
+        planets[eJupiter] = jupiter;
+        planets[eSaturn] = saturn;
+        planets[eUranus] = uranus;
+        planets[eNeptune] = neptune;
+        currentPlanet = planets[cpt];
+    }
+
+    void Reset(){
+        currentPlanet = planets[eSun];
+        cpt = 0;
     }
 };
