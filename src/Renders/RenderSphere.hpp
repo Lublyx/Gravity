@@ -10,7 +10,7 @@ struct RenderSphere
     GLuint VAO, VBO, EBO;
     int indexCount;
 
-    void init(float radius, int sectors = 32, int rings = 16){
+    void init(float radius, int sectors = 64, int rings = 32){
         Sphere s(radius, sectors, rings);
         indexCount = s.indices.size();
 

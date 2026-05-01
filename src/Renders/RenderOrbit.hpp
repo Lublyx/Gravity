@@ -11,7 +11,7 @@ struct RenderOrbit
     GLuint VAO, VBO;
     int vertexCount;
 
-    void init(int segment = 64)
+    void init(int segment = 128)
     {
         vertexCount = segment;
         std::vector<float> vertices;
