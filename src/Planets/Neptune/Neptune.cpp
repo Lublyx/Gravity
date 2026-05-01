@@ -8,7 +8,7 @@ Neptune::Neptune(){
     vy = 0.0f;
     vz = 0.0f;
     masse = 1.0243e26;
-    sphere.init(7);
+    sphereSize = 7;
     orbit = 0.0f;
     r = 0.44f;
     g = 0.46f;

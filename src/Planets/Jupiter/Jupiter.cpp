@@ -8,7 +8,7 @@ Jupiter::Jupiter(){
     vy = 0.0f;
     vz = 0.0f;
     masse = 1.8986e27;
-    sphere.init(10);
+    sphereSize = 10;
     orbit = 0.0f;
     r = 0.97f;
     g = 0.57f;

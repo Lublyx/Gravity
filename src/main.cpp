@@ -26,8 +26,10 @@ double deltaT = maxFPS * 3600.0 * days;
 const double openGlScale = 0.2e10;
 bool isFreeCam;
 glm::vec3 camPos;
-double xpos = WINDOW_WIDTH /2;
-double ypos = WINDOW_HEIGHT/2;
+double xpos = WINDOW_WIDTH / 2;
+double ypos = WINDOW_HEIGHT / 2;
+Planets planets;
+IPlanets *currentPlanet;
 
 struct Camera
 {
@@ -71,6 +73,14 @@ static void onKey(GLFWwindow *window, int key, int /*scancode*/, int action, int
     if (key == GLFW_KEY_F && action == GLFW_PRESS)
     {
         isFreeCam = isFreeCam ? false : true;
+    }
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS && !isFreeCam)
+    {
+        planets.Next(currentPlanet);
+    }
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS && !isFreeCam)
+    {
+        planets.Previous(currentPlanet);
     }
 }
 
@@ -204,7 +214,7 @@ int main()
     // ── Boucle de rendu ───────────────────────
     double lastTime = glfwGetTime();
     int frames = 0;
-    Planets planets;
+    currentPlanet = &planets.sun;
     RenderStars stars;
     stars.initStars();
 
@@ -258,7 +268,7 @@ int main()
             sin(horizontalAngle - 3.14f / 2.0f),
             0,
             cos(horizontalAngle - 3.14f / 2.0f));
-        glm::vec3 up = glm::cross( right, direction );
+        glm::vec3 up = glm::cross(right, direction);
 
         if (!isFreeCam)
         {
@@ -274,28 +284,12 @@ int main()
         }
         else
         {
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-            if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-            {
-                camPos += direction * 0.001f * (float)deltaT;
-            }
-            if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-            {
-                camPos -= right * 0.001f * (float)deltaT;
-            }
-            if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-            {
-                camPos -= direction * 0.001f * (float)deltaT;
-            }
-            if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-            {
-                camPos += right * 0.001f * (float)deltaT;
-            }
+            freeView3d(window, camPos, direction, right, deltaT);
         }
-        glm::vec3 camDirection = isFreeCam ? camPos + direction : isFreeCam ? up : glm::vec3(0.0f);
 
-        glm::mat4 view = glm::lookAt(camPos, camDirection, glm::vec3(0.0f, 1.0f, 0.0f));
+        glm::vec3 camDirection = isFreeCam ? camPos + direction : glm::vec3(currentPlanet->x / openGlScale, currentPlanet->y / openGlScale, currentPlanet->z / openGlScale);
+
+        glm::mat4 view = glm::lookAt(camPos, camDirection, isFreeCam ? up : glm::vec3(0.0f, 1.0f, 0.0f));
 
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), float(WINDOW_WIDTH) / float(WINDOW_HEIGHT), 0.01f, renderDistance);
 

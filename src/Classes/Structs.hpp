@@ -8,16 +8,46 @@
 #include <Planets/Neptune/Neptune.hpp>
 #include <Planets/Saturn/Saturn.hpp>
 #include <Planets/Uranus/Uranus.hpp>
+#include <vector>
+#include <iostream>
+
+enum PlanetsSelection
+{
+    eSun,
+    eEarth,
+    eMars,
+    eMercury,
+    eVenus,
+    eJupiter,
+    eNeptune,
+    eSaturn,
+    eUranus
+};
 
 struct Planets
 {
-    Sun sun = Sun();
-    Earth earth = Earth();
-    Mars mars = Mars();
-    Mercury mercury = Mercury();
-    Venus venus = Venus();
-    Jupiter jupiter = Jupiter();
-    Neptune neptune = Neptune();
-    Saturn saturn = Saturn();
-    Uranus uranus = Uranus();
+private:
+    std::vector<IPlanets> planets = {Sun(), Mercury(), Venus(), Earth(), Mars(), Jupiter(), Saturn(), Uranus(), Neptune()};
+    size_t cpt = 0;
+
+public:
+    IPlanets sun = planets[eSun];
+    IPlanets mercury = planets[eMercury];
+    IPlanets venus = planets[eVenus];
+    IPlanets earth = planets[eEarth];
+    IPlanets mars = planets[eMars];
+    IPlanets jupiter = planets[eJupiter];
+    IPlanets saturn = planets[eSaturn];
+    IPlanets uranus = planets[eUranus];
+    IPlanets neptune = planets[eNeptune];
+
+    void Next(IPlanets *currentPlanet)
+    {
+        currentPlanet = cpt < planets.size() - 1 ? &planets[++cpt] : &planets[cpt];
+    }
+
+    void Previous(IPlanets *currentPlanet)
+    {
+        currentPlanet = cpt > (size_t)0 ? &planets[--cpt] : &planets[cpt];
+    }
 };

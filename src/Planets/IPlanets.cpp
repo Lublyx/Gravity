@@ -9,9 +9,6 @@
 #include <Planets/IPlanets.hpp>
 #include <GravityEngine/GravityEngine.hpp>
 
-IPlanets::IPlanets(){
-    orbitToRender.init();
-}
 
 void IPlanets::calculPosition(IPlanets &sun, IPlanets &planet, double deltaT)
 {
@@ -50,6 +47,7 @@ void IPlanets::getOrbit(IPlanets &sun, IPlanets &planet, double deltaT)
 
 void IPlanets::render(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, double scale)
 {
+    sphere.init(sphereSize);
     glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(x / scale, y / scale, z / scale));
 
     glm::mat4 MVP = projection * view * model;
@@ -61,6 +59,8 @@ void IPlanets::render(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, d
 }
 
 void IPlanets::renderOrbit(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, double scale){
+    orbitToRender.init();
+
     glm::mat4 modelOrbit = glm::scale(glm::mat4(1.0f),
                                            glm::vec3(orbit / scale, orbit / scale, orbit / scale));
     glm::mat4 MVP = projection * view * modelOrbit;

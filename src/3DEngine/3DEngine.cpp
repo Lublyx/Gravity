@@ -23,8 +23,29 @@ void RenderObject(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, doubl
     planets.uranus.render(projection, view, shaderProg, scale);
 }
 
+void freeView3d(GLFWwindow *window, glm::vec3 &camPos, glm::vec3 direction, glm::vec3 right, double deltaT)
+{
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-//  Shaders 
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+    {
+        camPos += direction * 0.001f * (float)deltaT;
+    }
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+    {
+        camPos -= right * 0.001f * (float)deltaT;
+    }
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    {
+        camPos -= direction * 0.001f * (float)deltaT;
+    }
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+    {
+        camPos += right * 0.001f * (float)deltaT;
+    }
+}
+
+//  Shaders
 static const char *VERTEX_SHADER_SRC = R"glsl(
     #version 330 core
     layout(location = 0) in vec3 aPos;
@@ -95,6 +116,7 @@ static GLuint createProgram(const char *vertSrc, const char *fragSrc)
     return prog;
 }
 
-GLuint initProgram(){
+GLuint initProgram()
+{
     return createProgram(VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC);
 }

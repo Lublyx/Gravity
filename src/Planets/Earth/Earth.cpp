@@ -10,7 +10,7 @@ Earth::Earth()
     vz = 0.0;
     masse = 5.972e24;
     orbit = 0.0f;
-    sphere.init(3);
+    sphereSize = 3;
     r = 0.20f;
     g = 0.65f;
     b = 0.89f;

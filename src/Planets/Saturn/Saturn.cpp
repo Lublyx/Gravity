@@ -8,7 +8,7 @@ Saturn::Saturn(){
     vy = 0.0f;
     vz = 0.0f;
     masse = 5.6846e26;
-    sphere.init(12);
+    sphereSize = 12;
     orbit = 0.0f;
     r = 0.98f;
     g = 0.90f;

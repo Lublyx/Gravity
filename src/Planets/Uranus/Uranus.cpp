@@ -8,7 +8,7 @@ Uranus::Uranus(){
     vy = 0.0f;
     vz = 0.0f;
     masse = 8.6810e25;
-    sphere.init(6);
+    sphereSize = 6;
     orbit = 0.0f;
     r = 0.40f;
     g = 0.80f;

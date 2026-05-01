@@ -27,9 +27,9 @@ public:
     double b;
     double masse;
     double orbit;
+    int sphereSize;
     RenderSphere sphere;
 
-    IPlanets();
     virtual void calculPosition(IPlanets &sun, IPlanets &planet, double deltaT);
     virtual void getOrbit(IPlanets &sun, IPlanets &planet, double deltaT);
     void render(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, double scale);
