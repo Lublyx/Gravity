@@ -12,4 +12,6 @@ void RenderObject(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, doubl
 
 void freeView3d(GLFWwindow *window, glm::vec3 &camPos, glm::vec3 direction, glm::vec3 right, double deltaT);
 
+void updateOrbit(Planets &planets, double scale);
+
 GLuint initProgram();

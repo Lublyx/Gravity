@@ -9,9 +9,9 @@
 #include <Planets/IPlanets.hpp>
 #include <GravityEngine/GravityEngine.hpp>
 
-
 void IPlanets::calculPosition(IPlanets &sun, IPlanets &planet, double deltaT)
 {
+
     double vecX = getPlanetVectorX(sun.x, planet.x);
     double vecY = getPlanetVectorY(sun.y, planet.y);
     double vecZ = getPlanetVectorZ(sun.z, planet.z);
@@ -33,21 +33,56 @@ void IPlanets::calculPosition(IPlanets &sun, IPlanets &planet, double deltaT)
 
 void IPlanets::getOrbit(IPlanets &sun, IPlanets &planet, double deltaT)
 {
-    double BaseX = planet.x;
-    double BaseY = planet.y;
-    double BaseZ = planet.z;
+    // double BaseX = planet.x;
+    // double BaseY = planet.y;
+    // double BaseZ = planet.z;
 
-    do
+    // do
+    // {
+    //     if (planet.y > orbit)
+    // } while (BaseX != planet.x && BaseY != planet.y && BaseZ != planet.z);
+
+    while (planet.y > orbit)
     {
+        orbit = planet.y;
         calculPosition(sun, planet, deltaT);
-        if (planet.y > orbit)
-            orbit = planet.y;
-    } while (BaseX != planet.x && BaseY != planet.y && BaseZ != planet.z);
+    }
+}
+
+void IPlanets::updateOrbit(IPlanets &sun, double scale, int segment)
+{
+    double vecX = getPlanetVectorX(sun.x, x);
+    double vecY = getPlanetVectorY(sun.y, y);
+    double vecZ = getPlanetVectorZ(sun.z, z);
+
+    std::vector<float> vertices;
+
+    double r = getPlanetSunDistance(vecX, vecY, vecZ) / scale;
+
+    glm::dvec3 pos = glm::normalize(glm::dvec3(x, y, z));
+    glm::dvec3 vel = glm::normalize(glm::dvec3(vx, vy, vz));
+
+    glm::dvec3 normal = glm::normalize(glm::cross(pos, vel));
+
+    glm::dvec3 axisX = pos;                                       
+    glm::dvec3 axisY = glm::normalize(glm::cross(normal, axisX));
+
+    for (int i = 0; i < segment; i++)
+    {
+        float theta = 2.0f * M_PI * i / segment;
+
+        glm::dvec3 point = r * (cos(theta) * axisX + sin(theta) * axisY);
+
+        vertices.push_back((float)point.x);
+        vertices.push_back((float)point.y);
+        vertices.push_back((float)point.z);
+    }
+
+    orbitToRender.update(vertices, segment);
 }
 
 void IPlanets::render(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, double scale)
 {
-    sphere.init(sphereSize);
     glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(x / scale, y / scale, z / scale));
 
     glm::mat4 MVP = projection * view * model;
@@ -58,14 +93,20 @@ void IPlanets::render(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, d
     renderOrbit(projection, view, shaderProg, scale);
 }
 
-void IPlanets::renderOrbit(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, double scale){
-    orbitToRender.init();
+void IPlanets::renderOrbit(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, double scale)
+{
 
-    glm::mat4 modelOrbit = glm::scale(glm::mat4(1.0f),
-                                           glm::vec3(orbit / scale, orbit / scale, orbit / scale));
+    glm::mat4 modelOrbit = glm::mat4(1.0f);
+    //   glm::vec3(orbit / scale, orbit / scale, orbit / scale));
     glm::mat4 MVP = projection * view * modelOrbit;
 
     glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
     glUniform3f(glGetUniformLocation(shaderProg, "uColor"), r, g, b);
     orbitToRender.draw();
+}
+
+void IPlanets::init()
+{
+    sphere.init(sphereSize);
+    orbitToRender.init();
 }

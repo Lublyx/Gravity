@@ -6,11 +6,12 @@ Neptune::Neptune(){
     z = 0.0f;
     vx = 5432.48;
     vy = 0.0f;
-    vz = 0.0f;
     masse = 1.0243e26;
     sphereSize = 7;
     orbit = 0.0f;
     r = 0.44f;
     g = 0.46f;
     b = 0.83f;
+    angle = 1.77;
+    vz = vx * sin(glm::radians(angle));
 }

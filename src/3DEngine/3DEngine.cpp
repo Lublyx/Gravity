@@ -23,6 +23,18 @@ void RenderObject(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, doubl
     planets.uranus.render(projection, view, shaderProg, scale);
 }
 
+void updateOrbit(Planets &planets, double scale)
+{
+    planets.earth.updateOrbit(planets.sun, scale);
+    planets.mars.updateOrbit(planets.sun, scale);
+    planets.mercury.updateOrbit(planets.sun, scale);
+    planets.venus.updateOrbit(planets.sun, scale);
+    planets.jupiter.updateOrbit(planets.sun, scale);
+    planets.neptune.updateOrbit(planets.sun, scale);
+    planets.saturn.updateOrbit(planets.sun, scale);
+    planets.uranus.updateOrbit(planets.sun, scale);
+}
+
 void freeView3d(GLFWwindow *window, glm::vec3 &camPos, glm::vec3 direction, glm::vec3 right, double deltaT)
 {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);

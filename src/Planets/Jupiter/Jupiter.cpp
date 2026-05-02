@@ -6,11 +6,12 @@ Jupiter::Jupiter(){
     z = 0.0f;
     vx = 13058.5;
     vy = 0.0f;
-    vz = 0.0f;
     masse = 1.8986e27;
     sphereSize = 10;
     orbit = 0.0f;
     r = 0.97f;
     g = 0.57f;
     b = 0.17f;
+    angle = 1.304;
+    vz = vx * sin(glm::radians(angle));
 }

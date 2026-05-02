@@ -219,11 +219,13 @@ int main()
     int frames = 0;
     RenderStars stars;
     stars.initStars();
+    planets.Init();
 
     calculOrbit(planets, deltaT);
-
+    
     float lastRenderTime = 0.0f;
-
+    updateOrbit(planets, openGlScale);
+    
     while (!glfwWindowShouldClose(window))
     {
         float currentTime = (float)glfwGetTime();

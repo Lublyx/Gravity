@@ -66,8 +66,22 @@ public:
         currentPlanet = planets[cpt];
     }
 
-    void Reset(){
+    void Reset()
+    {
         currentPlanet = planets[eSun];
         cpt = 0;
+    }
+
+    void Init()
+    {
+        sun.init();
+        mercury.init();
+        venus.init();
+        earth.init();
+        mars.init();
+        jupiter.init();
+        saturn.init();
+        uranus.init();
+        neptune.init();
     }
 };
