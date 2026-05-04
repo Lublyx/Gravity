@@ -78,7 +78,7 @@ void IPlanets::updateOrbit(IPlanets &sun, double scale, int segment)
         vertices.push_back((float)point.z);
     }
 
-    orbitToRender.update(vertices, segment);
+    // orbitToRender.update(vertices, segment);
 }
 
 void IPlanets::render(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, double scale)
@@ -90,14 +90,16 @@ void IPlanets::render(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, d
     glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
     glUniform3f(glGetUniformLocation(shaderProg, "uColor"), r, g, b);
     sphere.draw();
+    orbitToRender.addPoint(x / scale, y / scale, z / scale);
+
     renderOrbit(projection, view, shaderProg, scale);
 }
 
-void IPlanets::renderOrbit(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, double scale)
+void IPlanets::renderOrbit(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, double /*scale*/)
 {
 
     glm::mat4 modelOrbit = glm::mat4(1.0f);
-    //   glm::vec3(orbit / scale, orbit / scale, orbit / scale));
+
     glm::mat4 MVP = projection * view * modelOrbit;
 
     glUniformMatrix4fv(glGetUniformLocation(shaderProg, "uMVP"), 1, GL_FALSE, glm::value_ptr(MVP));
@@ -105,8 +107,13 @@ void IPlanets::renderOrbit(glm::mat4 projection, glm::mat4 view, GLuint shaderPr
     orbitToRender.draw();
 }
 
-void IPlanets::init()
+void IPlanets::init(double scale, IPlanets &sun)
 {
+    double vecX = getPlanetVectorX(sun.x, x);
+    double vecY = getPlanetVectorY(sun.y, y);
+    double vecZ = getPlanetVectorZ(sun.z, z);
+
+    double maxPoint = 2 * M_PI * (getPlanetSunDistance(vecX, vecY, vecZ) / scale);  
     sphere.init(sphereSize);
-    orbitToRender.init();
+    orbitToRender.init(maxPoint);
 }

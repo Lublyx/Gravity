@@ -35,5 +35,5 @@ public:
     virtual void getOrbit(IPlanets &sun, IPlanets &planet, double deltaT);
     void render(glm::mat4 projection, glm::mat4 view, GLuint shaderProg, double scale);
     void updateOrbit(IPlanets &sun, double scale, int segment = 128);
-    void init();
+    void init(double scale, IPlanets &sun);
 };

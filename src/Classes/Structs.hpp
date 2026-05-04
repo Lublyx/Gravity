@@ -72,16 +72,16 @@ public:
         cpt = 0;
     }
 
-    void Init()
+    void Init(double scale)
     {
-        sun.init();
-        mercury.init();
-        venus.init();
-        earth.init();
-        mars.init();
-        jupiter.init();
-        saturn.init();
-        uranus.init();
-        neptune.init();
+        sun.init(scale, sun);
+        mercury.init(scale, sun);
+        venus.init(scale, sun);
+        earth.init(scale, sun);
+        mars.init(scale, sun);
+        jupiter.init(scale, sun);
+        saturn.init(scale, sun);
+        uranus.init(scale, sun);
+        neptune.init(scale, sun);
     }
 };

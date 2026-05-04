@@ -219,7 +219,7 @@ int main()
     int frames = 0;
     RenderStars stars;
     stars.initStars();
-    planets.Init();
+    planets.Init(openGlScale);
 
     calculOrbit(planets, deltaT);
 
@@ -290,11 +290,7 @@ int main()
         {
             freeView3d(window, camPos, direction, right, deltaT);
         }
-        double vecX = getPlanetVectorX(planets.sun.x, planets.mercury.x);
-        double vecY = getPlanetVectorY(planets.sun.y, planets.mercury.y);
-        double vecZ = getPlanetVectorZ(planets.sun.z, planets.mercury.z);
-        std::cout << getPlanetSunDistance(vecX, vecY, vecZ) << "\n";
-
+    
         planets.Update();
         glm::vec3 camDirection = isFreeCam ? camPos + direction : glm::vec3(planets.currentPlanet.x / openGlScale, planets.currentPlanet.y / openGlScale, planets.currentPlanet.z / openGlScale);
 
