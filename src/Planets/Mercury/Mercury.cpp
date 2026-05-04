@@ -2,9 +2,9 @@
 
 Mercury::Mercury(){
     x = 0.0f;
-    y = 5.79e10;
+    y = 6.98169e10;
     z = 0.0f;
-    vx = 47362;
+    vx = 38860;
     vy = 0.0f;
     masse = 3.3011e23;
     orbit = 0.0f;

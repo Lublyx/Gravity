@@ -2,9 +2,9 @@
 
 Neptune::Neptune(){
     x = 0.0f;
-    y = 4.4984e12;
+    y = 4.537e12;
     z = 0.0f;
-    vx = 5432.48;
+    vx = 5386.1;
     vy = 0.0f;
     masse = 1.0243e26;
     sphereSize = 7;

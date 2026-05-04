@@ -2,9 +2,9 @@
 
 Jupiter::Jupiter(){
     x = 0.0f;
-    y = 7.7834e11;
+    y = 8.16e11;
     z = 0.0f;
-    vx = 13058.5;
+    vx = 12448;
     vy = 0.0f;
     masse = 1.8986e27;
     sphereSize = 10;

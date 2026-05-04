@@ -2,9 +2,9 @@
 
 Uranus::Uranus(){
     x = 0.0f;
-    y = 2.8707e12;
+    y = 3e12;
     z = 0.0f;
-    vx = 6796.732;
+    vx = 6486.432;
     vy = 0.0f;
     masse = 8.6810e25;
     sphereSize = 6;

@@ -2,9 +2,9 @@
 
 Saturn::Saturn(){
     x = 0.0f;
-    y = 1.4267e12;
+    y = 1.5035e12;
     z = 0.0f;
-    vx = 9640.7;
+    vx = 9141;
     vy = 0.0f;
     masse = 5.6846e26;
     sphereSize = 12;

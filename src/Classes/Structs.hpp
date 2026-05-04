@@ -14,14 +14,14 @@
 enum PlanetsSelection
 {
     eSun,
-    eEarth,
-    eMars,
     eMercury,
     eVenus,
+    eEarth,
+    eMars,
     eJupiter,
-    eNeptune,
     eSaturn,
-    eUranus
+    eUranus,
+    eNeptune,
 };
 
 struct Planets
