@@ -4,6 +4,9 @@ Gravity is a solar system simulation.
 
 Keyboard controls :
 
+wheel_up : Zoom in
+
+wheel_down : Zoom out
 
 \+ : increase time speed by 1 year/s
 
@@ -21,3 +24,8 @@ f : unlock freeView to navigate in 3D with :
   - arrow_left : move left
   - arrow_right : move right
   - mouse : free looking direction 
+
+When not in freeView :
+  - arrow_right : switch planet's focus (Next)
+  - arrow_left : switch planet's focus (Previous)
+  - R : reset focus to Sun
